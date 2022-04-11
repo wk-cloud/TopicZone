@@ -1,0 +1,80 @@
+/*
+    登录样式表
+*/
+.qq-out-wrapper {
+    width: 600px;
+    color:aliceblue;
+    background: rgba(0, 0, 0, .5);
+    border: 1px solid deepskyblue;
+    margin: 10% auto;
+    text-align: center;
+}
+
+.qq-out-wrapper .qq-container {
+    width: 80%;
+    margin: 5% auto;
+}
+
+.qq-out-wrapper .qq-container .qq-title {
+    border: 1px solid palevioletred;
+    padding: 20px 0;
+    color:#00a2ff;
+    font-family: "黑体";
+}
+
+.qq-out-wrapper .qq-container .login-form {
+    line-height: 40px;
+}
+
+.qq-out-wrapper .qq-container .login-form .qq-login-list{
+    padding:15px 0;
+}
+
+.qq-out-wrapper .qq-container .login-form .qq-login-list li{
+    position: relative;
+}
+
+/* 登录验证样式 */
+.qq-out-wrapper .qq-container .login-form .qq-login-list li .validation{
+    position: absolute;
+    width:150px;
+    height:40px;
+    margin-left:10px;
+    color:springgreen;
+    top:17px;
+    font:bolder 14px "仿宋";
+    text-align: left;
+}
+
+
+.qq-out-wrapper .qq-container .login-form .qq-login-btn-wrapper {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.qq-out-wrapper .qq-container .login-form .qq-login-btn-wrapper .btn{
+    display: flex;
+    text-align: center;
+    justify-content: space-evenly;
+}
+
+.qq-out-wrapper .qq-container .login-form .login-btn,
+.qq-out-wrapper .qq-container .login-form .register-btn{
+    width:80px;
+    height:30px;
+    display: block;
+    font:bold 14px "黑体";
+    line-height: 30px;
+    color:aliceblue;
+    background:#00a2ff;
+    border:1px solid orange;
+    cursor:pointer;
+    text-decoration: none;
+}
+.forget-password{
+    color:skyblue;
+}
+
+.copy{
+    color:springgreen;
+}
