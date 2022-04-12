@@ -17,7 +17,11 @@ window.onload = function () {
     // 获取表单验证文本容器
     let registerValidation = document.querySelector(".register-validation");
     // 是否提交表单的标识
-    let flag = true;
+    let loginIdFlag = true;
+    let nickNameFlag = true;
+    let passwordFlag = true;
+    let password1Flag = true;
+    let headImageFlag = true;
 
     // 表单获取焦点事件
     loginIdInput.onfocus = function(){
@@ -42,11 +46,10 @@ window.onload = function () {
         if (!isEmpty(loginId)) {
             // 验证账号长度是否合法
             if (!(loginId.length >= 6 && loginId.length <= 11)) {
-                flag = false;
+                loginIdFlag = false;
                 alert("账号长度必须在 6 ~ 11 位");
-                return;
             }else {
-                flag = true;
+                loginIdFlag = true;
             }
         }
     }
@@ -59,19 +62,17 @@ window.onload = function () {
                 nickNameInput.value = nickName;
             }
             if (!(nickName.length >= 1 && nickName.length <= 10)) {
-                flag = false;
+                nickNameFlag = false;
                 alert("昵称长度不合法,长度只能在：【1 ~ 10】之间");
-                return;
             }else {
-                flag = true;
+                nickNameFlag = true;
             }
             // 验证昵称字符是否合法
             if (!(/^[A-Za-z0-9\u4e00-\u9fa5]+$/.test(nickName))) {
-                flag = false;
+                nickNameFlag = false;
                 alert('昵称只能使用中文、英文或数字');
-                return;
             }else {
-                flag = true;
+                nickNameFlag = true;
             }
         }
     };
@@ -85,11 +86,10 @@ window.onload = function () {
             }
             // 必须包含大小写字母和数字的组合，不能使用特殊字符，长度在 6-10 之间
             if (!(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{6,10}$/.test(password))) {
-                flag = false;
+                passwordFlag = false;
                 alert("密码格式错误：必须包含大小写字母和数字的组合，不能使用特殊字符，长度在 6-10 之间");
-                return;
             }else {
-                flag = true;
+                passwordFlag = true;
             }
         }
 
@@ -105,20 +105,18 @@ window.onload = function () {
             }
             // 必须包含大小写字母和数字的组合，不能使用特殊字符，长度在 6-10 之间
             if (!(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{6,10}$/.test(password1))) {
-                flag = false;
+                password1Flag = false;
                 alert("密码格式错误：必须包含大小写字母和数字的组合，不能使用特殊字符，长度在 6-10 之间");
-                return;
             }else {
-                flag = true;
+                password1Flag = true;
             }
             if (password1 !== password) {
-                flag = false;
+                password1Flag = false;
                 alert("两次密码不一致，请重新输入");
                 document.querySelector(".password").value = '';
                 document.querySelector(".password1").value = '';
-                return;
             }else {
-                flag = true;
+                password1Flag = true;
             }
         }
     };
@@ -126,19 +124,17 @@ window.onload = function () {
         headImage = document.querySelector(".headImage").value;
         if (!isEmpty(headImage)) {
             if (/^[0-9]/.test(headImage)) {
-                flag = true;
+                headImageFlag = true;
             } else {
-                flag = false;
+                headImageFlag = false;
                 alert("图片格式必须要以数字【0 ~ 9】开头");
-                return;
             }
 
             if ((/\.jpg$/.test(headImage)) || (/\.png$/.test(headImage)) || (/\.gif$/.test(headImage)) || (/\.webp$/.test(headImage))) {
-                flag = true;
+                headImageFlag = true;
             } else {
-                flag = false;
+                headImageFlag = false;
                 alert("图片格式必须以：【.jpg/.png/.gif/.webp】 结尾");
-                return;
             }
         }
     };
@@ -148,32 +144,37 @@ window.onload = function () {
     registerForm.onsubmit = function () {
         // 验证是否为空
         if (isEmpty(loginId)) {
-            flag = false;
+            loginIdFlag = false;
             alert('账号不能为空');
-            return;
+            return loginIdFlag;
         }
         if (isEmpty(nickName)) {
-            flag = false;
+            nickNameFlag = false;
             alert('昵称不能为空');
-            return;
+            return nickNameFlag;
         }
         if (isEmpty(password)) {
-            flag = false;
+            passwordFlag = false;
             alert('密码不能为空');
-            return;
+            return passwordFlag;
         }
         if(isEmpty(password1)){
-            flag = false;
+            password1Flag = false;
             alert('确认密码不能为空');
-            return;
+            return password1Flag;
         }
 
         if (isEmpty(headImage)) {
-            flag = false;
+            headImageFlag = false;
             alert('头像不能为空');
-            return;
+            return headImageFlag;
         }
-        return flag;
+        if(loginIdFlag && nickNameFlag && passwordFlag && password1Flag && headImageFlag){
+            return true;
+        }else {
+            alert("填写的数据格式有误，请重新输入");
+            return false;
+        }
     }
 };
 

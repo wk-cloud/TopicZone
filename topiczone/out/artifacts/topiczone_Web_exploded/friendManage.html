@@ -108,11 +108,11 @@
             <button th:onclick="|friendPage(${session.userBasic.id},${1})|"
                     th:disabled="${session.friendPageNumber == 1}">首页</button>
             <button th:onclick="|friendPage(${session.userBasic.id},${session.friendPageNumber + 1})|"
-                    th:disabled="${session.friendPageNumber == session.friendPageCount || session.friendPageCount == 0}">下一页</button>
+                    th:disabled="${session.friendPageNumber == session.friendPageCount}">下一页</button>
             <button th:onclick="|friendPage(${session.userBasic.id},${session.friendPageNumber - 1})|"
-                    th:disabled="${session.friendPageNumber == 1 || session.friendPageCount == 0}">上一页</button>
+                    th:disabled="${session.friendPageNumber == 1}">上一页</button>
             <button th:onclick="|friendPage(${session.userBasic.id},${session.friendPageCount})|"
-                    th:disabled="${session.friendPageNumber == session.friendPageCount || session.friendPageCount == 0}">尾页</button>
+                    th:disabled="${session.friendPageNumber == session.friendPageCount}">尾页</button>
         </div>
     </div>
 </div>

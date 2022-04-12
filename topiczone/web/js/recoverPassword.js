@@ -29,6 +29,7 @@ window.onload = function(){
         if(isEmpty(phone)){
             flag = false;
             alert("手机号不能为空");
+            return flag;
         }
         return flag;
     };

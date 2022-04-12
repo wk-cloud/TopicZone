@@ -11,7 +11,8 @@ window.onload = function () {
     // 4. 获取错误提示
     let loginException = document.querySelector(".login-validation");
     // 5. 设置是否提交的标识
-    let flag = true;
+    let loginIdFlag = true;
+    let passwordFlag = true;
 
     // 表单获取焦点事件
     loginInput.onfocus = function () {
@@ -27,11 +28,11 @@ window.onload = function () {
         if (!isEmpty(loginId)) {
             // 验证账号长度是否合法
             if (!(loginId.length >= 6 && loginId.length <= 11)) {
-                flag = false;
+                loginIdFlag = false;
                 alert("账号长度必须在 6 ~ 11 位");
-                return;
+            }else {
+                loginIdFlag = true;
             }
-            flag = true;
         }
     };
     passwordInput.onblur = function () {
@@ -43,11 +44,11 @@ window.onload = function () {
             }
             // 必须包含大小写字母和数字的组合，不能使用特殊字符，长度在 6-10 之间
             if (!(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{6,10}$/.test(password))) {
-                flag = false;
+                passwordFlag = false;
                 alert("密码格式错误：必须包含大小写字母和数字的组合，不能使用特殊字符，长度在 6-10 之间");
-                return;
+            }else {
+                passwordFlag = true;
             }
-            flag = true;
         }
     };
 
@@ -58,20 +59,25 @@ window.onload = function () {
 
         // 1. 验证账号是否为空
         if (isEmpty(loginId)) {
-            flag = false;
+            loginIdFlag = false;
             alert("账号不能为空");
-            return;
+            return loginIdFlag;
         }
 
         // 2. 验证密码是否为空
         if (isEmpty(password)) {
-            flag = false;
-            alert("密码不能为空")
-            return;
+            passwordFlag = false;
+            alert("密码不能为空");
+            return passwordFlag;
         }
 
         // 3. 如果以上条件都通过，则提交表单
-        return flag;
+        if(loginIdFlag && passwordFlag){
+            return true;
+        }else {
+            alert("账号或密码格式有误,请重新输入");
+            return false;
+        }
     };
 };
 

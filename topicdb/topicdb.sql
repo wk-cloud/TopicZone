@@ -1,5 +1,5 @@
 
-# QQZone数据库
+# TopicZone数据库
 
 CREATE DATABASE IF NOT EXISTS topicdb  CHARACTER SET 'utf8';
 

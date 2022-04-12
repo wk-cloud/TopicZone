@@ -6,7 +6,9 @@ window.onload = function(){
     let contentInput = document.querySelector("#content");
     let title = null;
     let content = null;
-    let flag = true;
+    // 是否发布标识
+    let titleFlag = true;
+    let contentFlag = true;
 
     titleInput.onblur = function(){
         title = document.querySelector(".topic-title").value;
@@ -17,9 +19,9 @@ window.onload = function(){
                 titleInput.value = title;
             }
             if(title.length >= 1 && title.length <= 20){
-                flag = true;
+                titleFlag = true;
             }else {
-                flag = false;
+                titleFlag = false;
                 alert("标题长度不合法，标题长度在【1-20】个字符之间，请重新输入");
             }
         }
@@ -28,28 +30,28 @@ window.onload = function(){
     contentInput.onblur = function () {
         content = document.querySelector("#content").value;
         if(content.length >= 1){
-            flag = true;
+            contentFlag = true;
         }else {
-            flag = false;
+            contentFlag = false;
         }
     };
 
     publishForm.onsubmit = function(){
         if(isEmpty(title)){
-            flag = false;
+            titleFlag = false;
             alert("日志标题不能为空");
-            return;
-        }else {
-            flag = true;
+            return titleFlag;
         }
         if(isEmpty(content)){
-            flag = false;
+            contentFlag = false;
             alert("日志内容不能为空");
-            return;
-        }else {
-            flag = true;
+            return contentFlag;
         }
-        return flag;
+        if(titleFlag && contentFlag){
+            return true;
+        }else {
+            return false;
+        }
     };
 
 };
