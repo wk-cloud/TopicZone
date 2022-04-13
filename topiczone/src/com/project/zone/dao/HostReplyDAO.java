@@ -72,6 +72,6 @@ public interface HostReplyDAO {
     * @Return
     */
 
-    public abstract Integer getHostReplyUserId(Connection connection,Integer replyId);
+    public abstract Integer getHostReplyUserId(Connection connection,Integer hostReplyId);
 
 }

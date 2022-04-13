@@ -76,13 +76,5 @@ SHOW INDEX FROM t_reply;
 DROP DATABASE topicdb;
 
 
-# 删除数据库、表和外键约束
-/*ROP DATABASE qqzonedb;
-
-DROP TABLE t_host_reply
-
-ALTER TABLE t_host_reply DROP FOREIGN KEY FK_host_reply_basic;
-SHOW INDEX FROM t_reply
-ALTER TABLE t_host_reply DROP FOREIGN KEY FK_host_reply_topic;
-
-SELECT reply_content,reply_date replyDate FROM t_reply WHERE topic_id = 10;*/
+# 删除数据库
+DROP DATABASE topicdb

@@ -12,7 +12,7 @@
 <div class="friend-manage-wrapper">
     <div class="friend-manage-content">
         <h1 class="friend-manage-title">
-            <span>好友管理</span>
+            <span>用户管理</span>
             <a th:href="@{|/user.do?choice=friend&id=${session.userBasic.id}|}" class="back-to-main">返回主页</a>
         </h1>
         <form th:action="@{|/user.do?choice=friendManage&userBasicId=${session.userBasic.id}|}" method="post"
@@ -27,7 +27,7 @@
                 <th colspan="4">用户列表</th>
             </tr>
             <tr th:unless="${session.flag}">
-                <th colspan="4">好友列表</th>
+                <th colspan="4">关注列表</th>
             </tr>
             <tr>
                 <th>头像</th>
@@ -53,16 +53,16 @@
                 </td>
                 <td th:if="${userBasic.addFriend}" class="add-friend">
                     <a th:data="${userBasic.nickName}"
-                       th:onclick="|addFriend(${session.userBasic.id},${userBasic.id},this.getAttribute('data'))|">添加好友</a>
+                       th:onclick="|addFriend(${session.userBasic.id},${userBasic.id},this.getAttribute('data'))|">关注该用户</a>
                 </td>
                 <td th:unless="${userBasic.addFriend}">
-                    互为好友
+                    已关注
                 </td>
             </tr>
 
             <tr th:if="${#lists.isEmpty(session.friendList) && !session.flag}">
                 <th colspan="4">
-                    暂无好友
+                    暂无关注
                 </th>
             </tr>
             <tr th:if="${!(#lists.isEmpty(session.friendList)) && !session.flag}" th:each="friend : ${session.friendList}">
@@ -77,7 +77,7 @@
                 </td>
                 <td class="delete-friend">
                     <a th:data="${friend.nickName}"
-                       th:onclick="|deleteFriend(${friend.id},${session.userBasic.id},this.getAttribute('data'))|">删除好友</a>
+                       th:onclick="|deleteFriend(${friend.id},${session.userBasic.id},this.getAttribute('data'))|">取消关注</a>
                 </td>
             </tr>
         </table>
@@ -108,11 +108,11 @@
             <button th:onclick="|friendPage(${session.userBasic.id},${1})|"
                     th:disabled="${session.friendPageNumber == 1}">首页</button>
             <button th:onclick="|friendPage(${session.userBasic.id},${session.friendPageNumber + 1})|"
-                    th:disabled="${session.friendPageNumber == session.friendPageCount}">下一页</button>
+                    th:disabled="${session.friendPageNumber == session.friendPageCount || session.friendPageCount == 0}">下一页</button>
             <button th:onclick="|friendPage(${session.userBasic.id},${session.friendPageNumber - 1})|"
                     th:disabled="${session.friendPageNumber == 1}">上一页</button>
             <button th:onclick="|friendPage(${session.userBasic.id},${session.friendPageCount})|"
-                    th:disabled="${session.friendPageNumber == session.friendPageCount}">尾页</button>
+                    th:disabled="${session.friendPageNumber == session.friendPageCount || session.friendPageCount == 0}">尾页</button>
         </div>
     </div>
 </div>

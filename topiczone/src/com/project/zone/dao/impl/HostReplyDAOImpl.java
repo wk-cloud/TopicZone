@@ -103,9 +103,9 @@ public class HostReplyDAOImpl extends BaseDAO<HostReply> implements HostReplyDAO
     */
 
     @Override
-    public Integer getHostReplyUserId(Connection connection, Integer replyId) {
-        String sql = "select user_basic_id from t_host_reply where reply_id = ?";
-        Integer hostReplyId = getValue(connection, sql, replyId);
-        return hostReplyId;
+    public Integer getHostReplyUserId(Connection connection, Integer hostReplyId) {
+        String sql = "select user_basic_id from t_host_reply where host_reply_id = ?";
+        Integer hostReplyUserId = getValue(connection, sql, hostReplyId);
+        return hostReplyUserId;
     }
 }

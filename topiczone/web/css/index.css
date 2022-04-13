@@ -51,7 +51,7 @@
     color:cadetblue;
     cursor: pointer;
 }
-/* 个人中心 和 好友管理 */
+/* 个人中心 和 关注管理 */
 .qq-zone-wrapper .qq-zone-top .personal,
 .friend-manage{
     width:100px;
@@ -112,7 +112,7 @@
     text-decoration: none;
 }
 .qq-zone-wrapper .qq-zone-center .qq-zone-friend-list-wrapper li:hover{
-    background:rgba(0,0,0,.5);
+    background:rgba(0,0,0,.3);
 }
 .qq-zone-wrapper .qq-zone-center .qq-zone-friend-list-wrapper li:hover a{
     color:palevioletred;

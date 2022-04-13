@@ -40,7 +40,7 @@ public class OpenSessionInViewFilter implements Filter {
                 TransactionManager.rollback();
                 // 跳转到错误页面
                 HttpServletResponse response = (HttpServletResponse)servletResponse;
-                response.sendRedirect("http://localhost:8080/qqzone/error.do?choice=error&exception=" + e.toString());
+                response.sendRedirect("http://localhost:8080/topiczone/error.do?choice=error&exception=" + e.toString());
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }

@@ -42,6 +42,16 @@ public interface UserBasicService {
 
     /**
     * @author wk
+    * @Description 根据好友id，获取用户
+    * @Date 21:15 2022/4/13
+    * @Param
+    * @Return
+    */
+
+    public abstract List<UserBasic> getUserListByFriendId(Integer friendId) throws SQLException;
+
+    /**
+    * @author wk
     * @Description 好友总数
     * @Date 9:55 2022/4/2
     * @Param

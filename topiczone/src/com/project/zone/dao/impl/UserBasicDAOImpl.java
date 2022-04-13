@@ -75,6 +75,27 @@ public class UserBasicDAOImpl extends BaseDAO<UserBasic> implements UserBasicDAO
 
     /**
     * @author wk
+    * @Description 根据好友id，获取用户id
+    * @Date 21:12 2022/4/13
+    * @Param
+    * @Return
+    */
+
+    @Override
+    public List<UserBasic> getUserIdByFriendId(Connection connection, Integer friendId) {
+        String sql = "select user_id id from t_friends where friend_id = ?";
+        List<UserBasic> userIdList = getForList(connection, sql, friendId);
+        ArrayList<UserBasic> userList = new ArrayList<>(userIdList.size());
+        UserBasic user = null;
+        for(int i = 0;i < userIdList.size();i++){
+            user = new UserBasic(userIdList.get(i).getId());
+            userList.add(user);
+        }
+        return userList;
+    }
+
+    /**
+    * @author wk
     * @Description 根据用户，获取好友总数
     * @Date 9:53 2022/4/2
     * @Param

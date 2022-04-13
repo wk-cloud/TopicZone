@@ -39,7 +39,7 @@
                     <a th:if="${session.userBasic.id == session.friend.id}"
                        th:href="@{|/user.do?choice=friendManage&userBasicId=${session.userBasic.id}|}"
                        class="friend-manage">
-                        好友管理
+                        用户管理
                     </a>
                 </li>
             </ul>
@@ -49,9 +49,9 @@
     <div class="qq-zone-center">
         <!-- 好友列表-->
         <div class="qq-zone-friend-list-wrapper">
-            <h2>好友列表</h2>
+            <h2>关注列表</h2>
             <ul class="qq-zone-friend-list">
-                <li th:if="${#lists.isEmpty(session.friend.friendList)}" class="friend-list-null">好友列表为空</li>
+                <li th:if="${#lists.isEmpty(session.friend.friendList)}" class="friend-list-null">关注列表为空</li>
                 <li th:unless="${#lists.isEmpty(session.friend.friendList)}"
                     th:each="friend : ${session.friend.friendList}">
                     <img th:src="@{|/imgs/${friend.headImage}|}" alt="头像" class="friend-head-image">

@@ -43,6 +43,17 @@ public interface UserBasicDAO {
 
     /**
     * @author wk
+    * @Description 根据好友id，获取用户
+    * @Date 21:11 2022/4/13
+    * @Param
+    * @Return
+    */
+
+    public abstract List<UserBasic> getUserIdByFriendId(Connection connection,Integer friendId);
+
+
+    /**
+    * @author wk
     * @Description 根据用户，获取用户好友总数
     * @Date 9:52 2022/4/2
     * @Param

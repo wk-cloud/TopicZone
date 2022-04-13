@@ -74,6 +74,21 @@ public class UserBasicServiceImpl implements UserBasicService {
 
     /**
     * @author wk
+    * @Description 根据好友id，获取用户id
+    * @Date 21:15 2022/4/13
+    * @Param
+    * @Return
+    */
+
+    @Override
+    public List<UserBasic> getUserListByFriendId(Integer friendId) throws SQLException {
+        Connection connection = JDBCUtils.getConnection();
+        List<UserBasic> userList = userBasicDAO.getUserIdByFriendId(connection, friendId);
+        return userList;
+    }
+
+    /**
+    * @author wk
     * @Description 好友总数
     * @Date 9:56 2022/4/2
     * @Param

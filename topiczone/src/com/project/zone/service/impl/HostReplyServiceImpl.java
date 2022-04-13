@@ -80,11 +80,13 @@ public class HostReplyServiceImpl implements HostReplyService {
     public List<HostReply> getHostReplyList(Integer replyId) throws SQLException {
         Connection connection = JDBCUtils.getConnection();
         List<HostReply> hostReplyList = hostReplyDAO.getHostReplyListByReplyId(connection, replyId);
-        Integer hostReplyUserId = getHostReplyUserId(replyId);
-        UserBasic hostReplyUser = userBasicService.getUserBasicById(hostReplyUserId);
+        Integer hostReplyUserId = null;
+        UserBasic hostReplyUser = null;
         // 将发布回复的用户信息设置到 hostReply 类中
-        if(hostReplyUser != null){
+        if(!hostReplyList.isEmpty()){
             for(int i = 0;i < hostReplyList.size();i++){
+                hostReplyUserId = getHostReplyUserId(hostReplyList.get(i).getId());
+                hostReplyUser = userBasicService.getUserBasicById(hostReplyUserId);
                 hostReplyList.get(i).setAuthor(hostReplyUser);
             }
         }

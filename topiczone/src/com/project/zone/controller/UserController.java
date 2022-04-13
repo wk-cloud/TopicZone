@@ -127,26 +127,30 @@ public class UserController {
         UserBasic userBasic = userBasicService.getUserBasicById(userBasicId);
 
         List<UserBasic> friendList = userBasicService.getFriendList(userBasic);
+        List<UserBasic> userList = userBasicService.getUserListByFriendId(userBasicId);
         Integer hostReplyList = hostReplyService.getHostReplyUserId(userBasicId);
         List<Reply> replyList = replyService.getReplyListByUserId(userBasicId);
         List<Topic> topicList = topicService.getTopicList(userBasic);
         UserDetail userDetail = userDetailService.getUserDetailById(userBasicId);
 
         if (friendList != null) {
-            Integer deleteFriend = userBasicService.deleteFriendByUserId(userBasicId);
+            userBasicService.deleteFriendByUserId(userBasicId);
+        }
+        if (userList != null) {
+            userBasicService.deleteFriend(userBasicId);
         }
 
         if (hostReplyList != null) {
-            Integer deleteHostReply = hostReplyService.deleteHostReply(userBasicId);
+            hostReplyService.deleteHostReply(userBasicId);
         }
         if (replyList != null) {
-            Integer deleteReply = replyService.deleteReplyByUserId(userBasicId);
+            replyService.deleteReplyByUserId(userBasicId);
         }
         if (topicList != null) {
-            Integer deleteTopic = topicService.deleteTopicByUserId(userBasicId);
+            topicService.deleteTopicByUserId(userBasicId);
         }
         if (userDetail != null) {
-            Integer deleteUserDetail = userDetailService.deleteUserDetail(userBasicId);
+            userDetailService.deleteUserDetail(userBasicId);
         }
         Integer deleteUserBasic = userBasicService.deleteUserBasicByUserId(userBasicId);
         if (deleteUserBasic > 0) {
@@ -298,7 +302,7 @@ public class UserController {
 
     public String personal(Integer userBasicId, HttpSession session) throws SQLException {
         Map<String, Boolean> errorMap = new HashMap<>();
-        session.setAttribute("errorMap",errorMap);
+        session.setAttribute("errorMap", errorMap);
         UserBasic userBasic = userBasicService.getUserBasicById(userBasicId);
         UserDetail userDetail = userDetailService.getUserDetailById(userBasicId);
         if (userBasic != null) {
@@ -326,28 +330,28 @@ public class UserController {
         Map<String, Boolean> errorMap = new HashMap<>();
         if (userBasicId1 != null && userBasicId1 != userBasicId) {
             if (Tools.isNotEmpty(mode) && "personal".equals(mode)) {
-                errorMap.put("phoneError",true);
-            }else {
-                errorMap.put("phoneError",false);
+                errorMap.put("phoneError", true);
+            } else {
+                errorMap.put("phoneError", false);
             }
         }
-        if(userBasicId2 != null && userBasicId2 != userBasicId){
+        if (userBasicId2 != null && userBasicId2 != userBasicId) {
             if (Tools.isNotEmpty(mode) && "personal".equals(mode)) {
-                errorMap.put("emailError",true);
-            }else {
-                errorMap.put("emailError",false);
+                errorMap.put("emailError", true);
+            } else {
+                errorMap.put("emailError", false);
             }
         }
-        if(userBasicId3 != null && userBasicId3 != userBasicId){
+        if (userBasicId3 != null && userBasicId3 != userBasicId) {
             if (Tools.isNotEmpty(mode) && "personal".equals(mode)) {
-                errorMap.put("cardIdError",true);
-            }else {
-                errorMap.put("cardIdError",false);
+                errorMap.put("cardIdError", true);
+            } else {
+                errorMap.put("cardIdError", false);
             }
         }
-        if(!errorMap.isEmpty()){
+        if (!errorMap.isEmpty()) {
             System.out.println("我被调用了");
-            session.setAttribute("errorMap",errorMap);
+            session.setAttribute("errorMap", errorMap);
             return "personal";
         }
 

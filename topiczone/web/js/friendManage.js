@@ -1,12 +1,12 @@
 /* 添加好友 */
 function addFriend(userBasicId,friendId,friendNickName){
-    if(confirm("确定要添加 " + friendNickName + " 为好友吗?")){
+    if(confirm("确定要关注 " + friendNickName + " 的空间吗?")){
         window.location.href = "http://localhost:8080/topiczone/user.do?choice=addFriend&userBasicId=" + userBasicId + "&friendId=" + friendId ;
     }
 }
 /* 删除好友 */
 function deleteFriend(friendId,userBasicId,friendNickName) {
-    if(confirm("确定要与 " + friendNickName + " 解除好友关系吗?")){
+    if(confirm("确定要取消对 " + friendNickName + " 的关注吗?")){
         window.location.href = "http://localhost:8080/topiczone/user.do?choice=deleteFriend&friendId=" + friendId + "&userBasicId=" + userBasicId ;
     }
 }
