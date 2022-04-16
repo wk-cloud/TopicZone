@@ -46,6 +46,16 @@ public interface HostReplyDAO {
 
     /**
     * @author wk
+    * @Description 根据评论id，删除评论的回复
+    * @Date 20:02 2022/4/16
+    * @Param
+    * @Return
+    */
+
+    public abstract Integer deleteHostReplyByReplyId(Connection connection,Integer replyId);
+
+    /**
+    * @author wk
     * @Description 根据回复id，查询相关联的用户回复列表
     * @Date 21:47 2022/3/25
     * @Param

@@ -41,6 +41,16 @@ public interface ReplyDAO {
 
     public abstract Integer deleteReplyByUserId(Connection connection,Integer userBasicId);
 
+    /**
+    * @author wk
+    * @Description 根据日志id，删除评论
+    * @Date 19:45 2022/4/16
+    * @Param
+    * @Return
+    */
+
+    public abstract Integer deleteReplyByTopicId(Connection connection,Integer topicId);
+
 
     /**
     * @author wk

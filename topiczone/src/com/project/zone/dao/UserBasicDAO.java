@@ -43,6 +43,16 @@ public interface UserBasicDAO {
 
     /**
     * @author wk
+    * @Description 根据用户基础信息，和页码获取好友列表
+    * @Date 22:21 2022/4/14
+    * @Param
+    * @Return
+    */
+
+    public abstract List<UserBasic> getFriendListByPageNumber(Connection connection,UserBasic userBasic,Integer pageNumber);
+
+    /**
+    * @author wk
     * @Description 根据好友id，获取用户
     * @Date 21:11 2022/4/13
     * @Param
@@ -112,6 +122,16 @@ public interface UserBasicDAO {
      */
 
     public abstract UserBasic getUserBasicById(Connection connection,Integer userBasicId);
+
+    /**
+    * @author wk
+    * @Description 获取全体用户信息
+    * @Date 22:44 2022/4/14
+    * @Param
+    * @Return
+    */
+
+    public abstract List<UserBasic> getUserBasicList(Connection connection);
 
     /**
     * @author wk

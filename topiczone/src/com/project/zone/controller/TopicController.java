@@ -10,6 +10,7 @@ import com.project.zone.service.TopicService;
 
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -88,20 +89,25 @@ public class TopicController {
     * @Param
     * @Return
     */
-
-    public String delete(Integer id,Integer authorId) throws SQLException {
+    // 存在 bug 明日修改
+    public String delete(Integer topicId,Integer authorId) throws SQLException {
         // 删除日志对应的评论
-        Topic topic = topicService.getTopic(id);
+        Topic topic = topicService.getTopic(topicId);
+        // 获取日志对应的评论
         List<Reply> replyList = replyService.getReplyList(topic);
-        List<HostReply> hostReplyList = hostReplyService.getHostReplyByUserId(topic.getAuthor().getId());
-        if(replyList != null){
-            replyService.deleteReplyByUserId(topic.getAuthor().getId());
+        List<HostReply> hostReplyList = null;
+        // 获取评论对应的回复
+        for(int i = 0;i < replyList.size();i++){
+           hostReplyList = hostReplyService.getHostReplyList(replyList.get(i).getId());
+           if(hostReplyList != null){
+                hostReplyService.deleteHostReplyByReplyId(replyList.get(i).getId());
+           }
         }
-        if(hostReplyList != null){
-            hostReplyService.deleteHostReplyByUserId(topic.getAuthor().getId());
+        if(replyList != null){
+            replyService.deleteReplyByTopicId(topicId);
         }
         // 删除日志
-        Integer deleteTopic = topicService.deleteTopicById(id);
+        Integer deleteTopic = topicService.deleteTopicById(topicId);
         if(deleteTopic > 0){
             return "redirect:user.do?choice=friend&id=" + authorId;
         }else {

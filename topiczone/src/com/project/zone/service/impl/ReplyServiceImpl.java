@@ -45,7 +45,7 @@ public class ReplyServiceImpl implements ReplyService {
 
     /**
     * @author wk
-    * @Description 删除评论
+    * @Description 根据评论id,删除评论
     * @Date 10:17 2022/4/3
     * @Param
     * @Return
@@ -70,6 +70,21 @@ public class ReplyServiceImpl implements ReplyService {
     public Integer deleteReplyByUserId(Integer userBasicId) throws SQLException {
         Connection connection = JDBCUtils.getConnection();
         Integer deleteReply = replyDAO.deleteReplyByUserId(connection, userBasicId);
+        return deleteReply;
+    }
+
+    /**
+    * @author wk
+    * @Description 根据日志id，删除评论
+    * @Date 19:57 2022/4/16
+    * @Param
+    * @Return
+    */
+
+    @Override
+    public Integer deleteReplyByTopicId(Integer topicId) throws SQLException {
+        Connection connection = JDBCUtils.getConnection();
+        Integer deleteReply = replyDAO.deleteReplyByTopicId(connection, topicId);
         return deleteReply;
     }
 
@@ -133,6 +148,7 @@ public class ReplyServiceImpl implements ReplyService {
     /**
      * @author wk
      * @Description 根据评论id，获取发布评论的用户id
+     *
      * @Date 22:27 2022/3/27
      * @Param
      * @Return

@@ -43,6 +43,15 @@ public interface ReplyService {
 
     public abstract Integer deleteReplyByUserId(Integer userBasicId) throws SQLException;
 
+    /**
+    * @author wk
+    * @Description 根据评论id，删除评论
+    * @Date 19:56 2022/4/16
+    * @Param
+    * @Return
+    */
+
+    public abstract Integer deleteReplyByTopicId(Integer topicId) throws SQLException;
 
 
     /**

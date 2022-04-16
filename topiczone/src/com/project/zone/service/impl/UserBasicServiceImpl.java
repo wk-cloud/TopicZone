@@ -74,6 +74,27 @@ public class UserBasicServiceImpl implements UserBasicService {
 
     /**
     * @author wk
+    * @Description 根据页码和用户信息，获取好友列表
+    * @Date 22:24 2022/4/14
+    * @Param
+    * @Return
+    */
+
+    @Override
+    public List<UserBasic> getFriendListByPageNumber(UserBasic userBasic, Integer pageNumber) throws SQLException {
+        Connection connection = JDBCUtils.getConnection();
+        List<UserBasic> friendIdListObj = userBasicDAO.getFriendListByPageNumber(connection, userBasic,pageNumber);
+        ArrayList<UserBasic> friendList = new ArrayList<>(friendIdListObj.size());
+        UserBasic friend = null;
+        for (int i = 0; i < friendIdListObj.size(); i++) {
+            friend = userBasicDAO.getUserBasicById(connection,friendIdListObj.get(i).getId());
+            friendList.add(friend);
+        }
+        return friendList;
+    }
+
+    /**
+    * @author wk
     * @Description 根据好友id，获取用户id
     * @Date 21:15 2022/4/13
     * @Param
@@ -85,6 +106,13 @@ public class UserBasicServiceImpl implements UserBasicService {
         Connection connection = JDBCUtils.getConnection();
         List<UserBasic> userList = userBasicDAO.getUserIdByFriendId(connection, friendId);
         return userList;
+    }
+
+    @Override
+    public List<UserBasic> getUserBasicList() throws SQLException {
+        Connection connection = JDBCUtils.getConnection();
+        List<UserBasic> userBasicList = userBasicDAO.getUserBasicList(connection);
+        return userBasicList;
     }
 
     /**

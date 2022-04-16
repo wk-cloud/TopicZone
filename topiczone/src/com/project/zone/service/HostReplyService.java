@@ -39,6 +39,16 @@ public interface HostReplyService {
 
     /**
     * @author wk
+    * @Description 根据评论id，删除评论的回复
+    * @Date 20:04 2022/4/16
+    * @Param
+    * @Return
+    */
+
+    public abstract Integer deleteHostReplyByReplyId(Integer replyId) throws SQLException;
+
+    /**
+    * @author wk
     * @Description 根据评论id，获取用户回复列表
     * @Date 21:45 2022/3/25
     * @Param

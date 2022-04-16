@@ -1,7 +1,7 @@
 // 删除日志
-function deleteTopic(id,authorId,title) {
+function deleteTopic(topicId,authorId,title) {
     if (confirm("确定要删除 《" + title + "》吗")) {
-        window.location.href = "http://localhost:8080/topiczone/topic.do?choice=delete&id=" + id + "&authorId=" + authorId;
+        window.location.href = "http://localhost:8080/topiczone/topic.do?choice=delete&topicId=" + topicId + "&authorId=" + authorId;
     }
 }
 

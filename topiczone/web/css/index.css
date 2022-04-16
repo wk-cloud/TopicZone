@@ -2,57 +2,79 @@
     个人空间主页
 */
 /*整个页面的外部容器*/
-.qq-zone-wrapper{
+.topic-zone-wrapper{
     width:100%;
     margin:0 auto;
 }
 /*页面顶部*/
-.qq-zone-wrapper .qq-zone-top{
+.topic-zone-wrapper .topic-zone-top{
     width:100%;
     margin: 0 auto;
     padding-bottom: 1px;
-    background:orchid;
+    background: #12c2e9; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #12c2e9, #c471ed, #f64f59); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #12c2e9, #c471ed, #f64f59);
 }
-.qq-zone-wrapper .qq-zone-top .qq-zone-title{
+.topic-zone-wrapper .topic-zone-top .topic-zone-title{
     width:100%;
     padding:20px 0;
+    color:springgreen;
     text-align: center;
 }
-.qq-zone-wrapper .qq-zone-top .page-native{
+.topic-zone-wrapper .topic-zone-top .page-native{
     margin:0 0 10px 10px;
 }
-.qq-zone-wrapper .qq-zone-top ul{
+.topic-zone-wrapper .topic-zone-top ul{
     width:100%;
     display: flex;
 }
 /* 欢迎进入空间 */
-.qq-zone-wrapper .qq-zone-top .welcome-title{
-    display: block;
+.topic-zone-wrapper .topic-zone-top .welcome-li {
+    display: flex;
+    margin-left:150px;
+}
+
+.topic-zone-wrapper .topic-zone-top .welcome-li .userNickName{
+    color:#FF9900;
+
+}
+.topic-zone-wrapper .topic-zone-top .user-head-image{
+    width:40px;
+    height:40px;
+    border:1px solid deepskyblue;
+    border-radius: 100% 100%;
+}
+.topic-zone-wrapper .topic-zone-top .welcome-li p{
+    line-height: 40px;
+}
+
+.topic-zone-wrapper .topic-zone-top .welcome-title{
     height:30px;
     color:greenyellow;
     font: bolder 18px "微软雅黑";
     line-height: 30px;
-    margin-left:150px;
     margin-right:20px;
 }
 /* 返回个人空间 */
-.qq-zone-wrapper .qq-zone-top .back-to-main{
+.topic-zone-wrapper .topic-zone-top .back-to-main{
     display: block;
     height:30px;
-    line-height: 30px;
+    color:springgreen;
+    line-height: 40px;
+    margin-left:20px;
 }
 
 /* 退出登录 */
-.qq-zone-wrapper .qq-zone-top .login-out-btn{
+.topic-zone-wrapper .topic-zone-top .login-out-btn{
     width:100px;
     height:30px;
-    margin-left:644px;
+    margin-left:600px;
     border:1px solid deepskyblue;
     color:cadetblue;
     cursor: pointer;
 }
 /* 个人中心 和 关注管理 */
-.qq-zone-wrapper .qq-zone-top .personal,
+.topic-zone-wrapper .topic-zone-top .personal,
 .friend-manage{
     width:100px;
     height:30px;
@@ -69,32 +91,35 @@
 }
 
 /*中间部分*/
-.qq-zone-wrapper .qq-zone-center{
+.topic-zone-wrapper .topic-zone-center{
     width:80%;
     min-height:600px;
     margin:20px auto;
     display: flex;
-    border:1px solid blue;
-    background:rgba(255,255,255,.3);
+    /*border:1px solid blue;*/
+    /*background:rgba(255,255,255,.3);*/
+    background: #ffefba; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #ffefba, #ffffff); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #ffefba, #ffffff);
 }
-.qq-zone-wrapper .qq-zone-center h2{
+.topic-zone-wrapper .topic-zone-center h2{
     width:100%;
     height:40px;
     line-height: 40px;
     border-bottom: 1px solid red;
 }
 /* 好友列表模块 */
-.qq-zone-wrapper .qq-zone-center .qq-zone-friend-list-wrapper{
+.topic-zone-wrapper .topic-zone-center .topic-zone-friend-list-wrapper{
     width:20%;
     text-align: center;
     border:1px solid orange;
 
 }
-.qq-zone-wrapper .qq-zone-center .qq-zone-friend-list-wrapper ul{
+.topic-zone-wrapper .topic-zone-center .topic-zone-friend-list-wrapper ul{
     height:93%;
     background: rgba(255,255,255,.6);
 }
-.qq-zone-wrapper .qq-zone-center .qq-zone-friend-list-wrapper li{
+.topic-zone-wrapper .topic-zone-center .topic-zone-friend-list-wrapper li{
     height:60px;
     line-height: 60px;
     padding: 10px 0;
@@ -102,22 +127,22 @@
     display: flex;
     align-items: center;
 }
-.qq-zone-wrapper .qq-zone-center .qq-zone-friend-list-wrapper .qq-zone-friend-list .friend-list-null{
+.topic-zone-wrapper .topic-zone-center .topic-zone-friend-list-wrapper .topic-zone-friend-list .friend-list-null{
     display: block;
     text-align: center;
     color:Red;
 }
-.qq-zone-wrapper .qq-zone-center .qq-zone-friend-list-wrapper li a{
+.topic-zone-wrapper .topic-zone-center .topic-zone-friend-list-wrapper li a{
     color:black;
     text-decoration: none;
 }
-.qq-zone-wrapper .qq-zone-center .qq-zone-friend-list-wrapper li:hover{
+.topic-zone-wrapper .topic-zone-center .topic-zone-friend-list-wrapper li:hover{
     background:rgba(0,0,0,.3);
 }
-.qq-zone-wrapper .qq-zone-center .qq-zone-friend-list-wrapper li:hover a{
-    color:palevioletred;
+.topic-zone-wrapper .topic-zone-center .topic-zone-friend-list-wrapper li:hover a{
+   color:cornflowerblue;
 }
-.qq-zone-wrapper .qq-zone-center .qq-zone-friend-list-wrapper li img{
+.topic-zone-wrapper .topic-zone-center .topic-zone-friend-list-wrapper li img{
     width:60px;
     height:60px;
     margin-left:40px;
@@ -127,15 +152,15 @@
 }
 
 /* 文章列表模块 */
-.qq-zone-wrapper .qq-zone-center .qq-zone-topic-list-wrapper{
+.topic-zone-wrapper .topic-zone-center .topic-zone-topic-list-wrapper{
     width:80%;
     text-align: center;
 }
-.qq-zone-wrapper .qq-zone-center .qq-zone-topic-list-wrapper h2{
+.topic-zone-wrapper .topic-zone-center .topic-zone-topic-list-wrapper h2{
     padding-bottom: 1px;
 }
 
-.qq-zone-topic-list-wrapper .publish{
+.topic-zone-topic-list-wrapper .publish{
     display: block;
     width:100px;
     height:30px;
@@ -149,37 +174,49 @@
     margin-bottom:4px;
     margin-left:79.5%;
 }
-.qq-zone-topic-list-wrapper .publish:hover{
+.topic-zone-topic-list-wrapper .topic-title a {
+    text-decoration: none;
+}
+
+.topic-zone-topic-list-wrapper .publish:hover{
     background:palevioletred;
     color:white;
 }
+.topic-zone-topic-list-wrapper .topic-title:hover{
+    cursor: pointer;
+    background: rgba(0,0,0,.1);
+}
+.topic-zone-topic-list-wrapper .topic-title:hover a{
+    color:#FF6666;
+    text-decoration: underline;
+}
 
-.qq-zone-topic-list-wrapper .qq-zone-topic-table{
+.topic-zone-topic-list-wrapper .topic-zone-topic-table{
     width:80%;
     line-height: 40px;
     margin:0 auto;
-    background: rgba(255,255,255,.6);
+    background: rgba(255,255,255,.1);
 }
 
-.qq-zone-topic-table,
-.qq-zone-topic-table th,
-.qq-zone-topic-table td{
+.topic-zone-topic-table,
+.topic-zone-topic-table th,
+.topic-zone-topic-table td{
     text-align: center;
     border:1px solid hotpink;
     border-collapse: collapse;
 }
 
-.qq-zone-topic-table .delete:hover{
+.topic-zone-topic-table .delete:hover{
     cursor: pointer;
     color:red;
-    background: rgba(0,0,0,.3);
+    background: rgba(0,0,0,.1);
 }
 
-.qq-zone-topic-list-wrapper .page-btn-wrapper{
+.topic-zone-topic-list-wrapper .page-btn-wrapper{
     width:100%;
     margin-top:10px;
 }
-.qq-zone-topic-list-wrapper .page-btn-wrapper button{
+.topic-zone-topic-list-wrapper .page-btn-wrapper button{
     width:100px;
     height:30px;
     background: antiquewhite;
@@ -189,10 +226,12 @@
 
 
 /*页面底部*/
-.qq-zone-wrapper .qq-zone-bottom{
+.topic-zone-wrapper .topic-zone-bottom{
     width:100%;
     padding:40px 0;
+    color:springgreen;
     text-align: center;
-    border:1px solid orangered;
-    background:deepskyblue;
+    background: #12c2e9; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #12c2e9, #c471ed, #f64f59); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #12c2e9, #c471ed, #f64f59);
 }

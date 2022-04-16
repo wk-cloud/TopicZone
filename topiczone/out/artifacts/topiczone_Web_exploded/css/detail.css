@@ -13,7 +13,9 @@
     width: 1200px;
     min-height: 700px;
     margin: 0 auto;
-    background: rgba(255, 255, 255, .6);
+    background: #ffefba; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #ffefba, #ffffff); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #ffefba, #ffffff);
     border: 1px solid red;
 }
 
@@ -34,6 +36,7 @@
 .topic-detail-wrapper .back-to-main {
     min-width: 100px;
     height: 25px;
+    color:#FF6666;
     line-height: 25px;
     margin-left: 20px;
 }
@@ -81,7 +84,10 @@
     width: 1200px;
     min-height: 100px;
     margin: 20px auto;
-    background: rgba(255, 255, 255, .6);
+    /*background: rgba(255, 255, 255, .6);*/
+    background: #C6FFDD;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #f7797d, #FBD786, #C6FFDD);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #f7797d, #FBD786, #C6FFDD); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     border: 1px solid red;
 }
 
@@ -91,7 +97,10 @@
     /*margin: 20px auto;*/
     margin-top: 20px;
     margin-bottom: 0;
-    background: rgba(255, 255, 255, .6);
+    /*background: rgba(255, 255, 255, .6);*/
+    background: #C6FFDD;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #f7797d, #FBD786, #C6FFDD);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #f7797d, #FBD786, #C6FFDD); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     transition: all 0.1s ease;
     /* 隐藏 */
     height: 0px;
@@ -163,7 +172,11 @@
     margin: 0 auto;
     border: 1px solid red;
     border-bottom: none;
-    background: rgba(255, 255, 255, .6);
+    /*background: rgba(255, 255, 255, .6);*/
+    background: #C6FFDD;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #f7797d, #FBD786, #C6FFDD);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #f7797d, #FBD786, #C6FFDD); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 }
 
 .topic-wrapper .reply-friend-area li {

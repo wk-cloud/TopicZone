@@ -75,6 +75,28 @@ public class UserBasicDAOImpl extends BaseDAO<UserBasic> implements UserBasicDAO
 
     /**
     * @author wk
+    * @Description 根据页码和用户信息，查询好友列表
+    * @Date 22:22 2022/4/14
+    * @Param
+    * @Return
+    */
+
+    @Override
+    public List<UserBasic> getFriendListByPageNumber(Connection connection, UserBasic userBasic, Integer pageNumber) {
+        String sql = "select friend_id id from t_friends where user_id = ? limit ?,5";
+        // 查询到的是好友id，不能直接作为UserBasic对象返回，要通过UserBasic构造器初始化后再返回
+        List<UserBasic> friendIdList = getForList(connection, sql, userBasic.getId(),(pageNumber - 1) * 5);
+        ArrayList<UserBasic> friendIdListObj = new ArrayList<>(friendIdList.size());
+        UserBasic userBasic1 = null;
+        for(int i = 0;i< friendIdList.size();i++){
+            userBasic1 = new UserBasic(friendIdList.get(i).getId());
+            friendIdListObj.add(userBasic1);
+        }
+        return friendIdListObj;
+    }
+
+    /**
+    * @author wk
     * @Description 根据好友id，获取用户id
     * @Date 21:12 2022/4/13
     * @Param
@@ -183,6 +205,21 @@ public class UserBasicDAOImpl extends BaseDAO<UserBasic> implements UserBasicDAO
                 "user_basic_id = ?";
         UserBasic user = getInstance(connection, sql, userBasicId);
         return user;
+    }
+
+    /**
+    * @author wk
+    * @Description 获取全部用户信息
+    * @Date 22:45 2022/4/14
+    * @Param
+    * @Return
+    */
+
+    @Override
+    public List<UserBasic> getUserBasicList(Connection connection) {
+        String sql = "select user_basic_id id, login_id loginId,nick_name nickName,password password,head_image headImage from t_user_basic";
+        List<UserBasic> userList = getForList(connection, sql);
+        return userList;
     }
 
     /**

@@ -13,7 +13,9 @@ body{
 .friend-manage-content{
     width:100%;
     margin-bottom: 50px;
-    background: rgba(255,255,255,.7);
+    background: #ffefba; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #ffefba, #ffffff); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #ffefba, #ffffff);
     border:1px solid deepskyblue;
     text-align: center;
 }
@@ -63,11 +65,22 @@ body{
     border:1px solid palevioletred;
 }
 
+/* 鼠标移入好友昵称或用户昵称显示下划线 */
+.friend-nickName a,.user-nickName a{
+    text-decoration: none;
+}
+.friend-nickName:hover a,
+.user-nickName:hover a{
+    text-decoration: underline;
+    color:red;
+}
+
 /* 返回主页 */
 .friend-manage-title .back-to-main{
     position:absolute;
     right:20px;
     top:20px;
+    color:rgb(236 ,82, 82);
     font:16px "微软雅黑";
 }
 

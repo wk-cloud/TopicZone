@@ -45,8 +45,8 @@
                 <td>
                     <img th:src="@{|/imgs/${userBasic.headImage}|}" alt="头像">
                 </td>
-                <td th:text="${userBasic.nickName}">
-                    <p>往事随风</p>
+                <td class="user-nickName">
+                    <a th:href="@{|/user.do?choice=friend&id=${userBasic.id}|}" th:text="${userBasic.nickName}"></a>
                 </td>
                 <td th:text="${userBasic.loginId}">
                     <p>20121212</p>
@@ -69,8 +69,8 @@
                 <td>
                     <img th:src="@{|/imgs/${friend.headImage}|}" alt="头像">
                 </td>
-                <td th:text="${friend.nickName}">
-                    <p>往事随风</p>
+                <td class="friend-nickName">
+                    <a th:href="@{|/user.do?choice=friend&id=${friend.id}|}" th:text="${friend.nickName}"></a>
                 </td>
                 <td th:text="${friend.loginId}">
                     <p>20121212</p>

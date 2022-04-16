@@ -4,7 +4,7 @@ function addFriend(userBasicId,friendId,friendNickName){
         window.location.href = "http://localhost:8080/topiczone/user.do?choice=addFriend&userBasicId=" + userBasicId + "&friendId=" + friendId ;
     }
 }
-/* 删除好友 */
+/* 取消关注 */
 function deleteFriend(friendId,userBasicId,friendNickName) {
     if(confirm("确定要取消对 " + friendNickName + " 的关注吗?")){
         window.location.href = "http://localhost:8080/topiczone/user.do?choice=deleteFriend&friendId=" + friendId + "&userBasicId=" + userBasicId ;

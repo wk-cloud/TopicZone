@@ -2,14 +2,15 @@ package com.project.zone.controller;
 
 
 import com.project.myssm.util.Tools;
-import com.project.zone.bean.Reply;
-import com.project.zone.bean.Topic;
-import com.project.zone.bean.UserBasic;
-import com.project.zone.bean.UserDetail;
+import com.project.zone.bean.*;
 import com.project.zone.service.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -76,7 +77,6 @@ public class UserController {
         return "register";
     }
 
-
     /**
      * @author wk
      * @Description 进入登录页面
@@ -126,9 +126,11 @@ public class UserController {
 
         UserBasic userBasic = userBasicService.getUserBasicById(userBasicId);
 
+        // 查找是否存在好友
         List<UserBasic> friendList = userBasicService.getFriendList(userBasic);
+        // 查找是否是别人的好友
         List<UserBasic> userList = userBasicService.getUserListByFriendId(userBasicId);
-        Integer hostReplyList = hostReplyService.getHostReplyUserId(userBasicId);
+        List<HostReply> hostReplyList = hostReplyService.getHostReplyByUserId(userBasicId);
         List<Reply> replyList = replyService.getReplyListByUserId(userBasicId);
         List<Topic> topicList = topicService.getTopicList(userBasic);
         UserDetail userDetail = userDetailService.getUserDetailById(userBasicId);
@@ -141,12 +143,27 @@ public class UserController {
         }
 
         if (hostReplyList != null) {
-            hostReplyService.deleteHostReply(userBasicId);
+            hostReplyService.deleteHostReplyByUserId(userBasicId);
         }
         if (replyList != null) {
+            List<HostReply> hostReplyList1 = null;
+            for(int i = 0;i < replyList.size();i++){
+                hostReplyList1 = hostReplyService.getHostReplyList(replyList.get(i).getId());
+                if(hostReplyList1 != null){
+                    hostReplyService.deleteHostReplyByReplyId(replyList.get(i).getId());
+                }
+            }
             replyService.deleteReplyByUserId(userBasicId);
         }
         if (topicList != null) {
+            List<Reply> replyList1 = null;
+           for(int i = 0;i < topicList.size();i++){
+                replyList1 = replyService.getReplyList(topicList.get(i));
+                if(replyList1 != null){
+                    replyService.deleteReplyByTopicId(topicList.get(i).getId());
+                }
+           }
+
             topicService.deleteTopicByUserId(userBasicId);
         }
         if (userDetail != null) {
@@ -378,11 +395,6 @@ public class UserController {
      */
 
     public String friendManage(String mode, String keyword, Integer userBasicId, Integer pageNumber, HttpSession session) throws SQLException {
-        // 获取当前用户的基础信息
-        UserBasic userBasic = userBasicService.getUserBasicById(userBasicId);
-        // 获取当前用户的好友列表
-        List<UserBasic> friendList = userBasicService.getFriendList(userBasic);
-
         // 展示好友列表或搜索结果列表的标识，false：展示好友列表，true：展示搜索结果列表
         boolean flag = false;
         // 添加好友标识,false：不能添加，true：可以添加
@@ -391,6 +403,13 @@ public class UserController {
         if (pageNumber == null) {
             pageNumber = 1;
         }
+
+        // 获取当前用户的基础信息
+        UserBasic userBasic = userBasicService.getUserBasicById(userBasicId);
+        // 获取当前用户的好友列表（全体）
+        List<UserBasic> friendList = userBasicService.getFriendList(userBasic);
+        // 获取当前用户的好友列表（分页）
+        List<UserBasic> friendList1 = userBasicService.getFriendListByPageNumber(userBasic, pageNumber);
 
         // 如果 mode 等于 'search' 则是通过搜索框发来请求
         if (Tools.isNotEmpty(mode) && "search".equals(mode)) {
@@ -417,7 +436,7 @@ public class UserController {
         if (flag) {
             // 获取搜索到的用户
             List<UserBasic> userBasicList = userBasicService.getUserBasicByKeyWord(keyword, pageNumber);
-            // 将获取到的用户，和当前用户的好友进行比对
+            // 将获取到的全体用户，和当前用户的好友进行比对
             if (!userBasicList.isEmpty() && !friendList.isEmpty()) {
                 for (int i = 0; i < userBasicList.size(); i++) {
                     if (userBasicList.get(i).getLoginId().equals(userBasic.getLoginId())) {
@@ -446,7 +465,6 @@ public class UserController {
                     userBasicList.get(i).setAddFriend(isAddFriend);
                 }
             }
-
             // 获取用户总记录数
             Long userBasicCount = userBasicService.getUserBasicCountByKeyWord(keyword);
             // 总页数
@@ -461,7 +479,7 @@ public class UserController {
 
         } else {
             session.setAttribute("userBasic", userBasic);
-            session.setAttribute("friendList", friendList);
+            session.setAttribute("friendList", friendList1);
 
             // 获取好友总记录数
             Long friendCount = userBasicService.getFriendCount(userBasic);
@@ -483,9 +501,21 @@ public class UserController {
      */
 
     public String addFriend(Integer userBasicId, Integer friendId) throws SQLException {
-        Integer addFriend = userBasicService.addFriend(userBasicId, friendId);
-        if (addFriend > 0) {
-            return "redirect:user.do?choice=friendManage&userBasicId=" + userBasicId;
+        UserBasic userBasic = userBasicService.getUserBasicById(userBasicId);
+        List<UserBasic> friendList = userBasicService.getFriendList(userBasic);
+        // 判断要关注的用户，是否已经被关注
+        boolean flag = true;
+        for (int i = 0; i < friendList.size(); i++) {
+            if (friendList.get(i).getId() == friendId) {
+                flag = false;
+                break;
+            }
+        }
+        if (flag) {
+            Integer addFriend = userBasicService.addFriend(userBasicId, friendId);
+            if (addFriend > 0) {
+                return "redirect:user.do?choice=friendManage&userBasicId=" + userBasicId;
+            }
         }
         return "error";
     }

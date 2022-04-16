@@ -63,6 +63,22 @@ public class ReplyDAOImpl extends BaseDAO<Reply> implements ReplyDAO {
 
     /**
     * @author wk
+    * @Description 根据日志id，删除评论
+    * @Date 19:46 2022/4/16
+    * @Param
+    * @Return
+    */
+
+    @Override
+    public Integer deleteReplyByTopicId(Connection connection, Integer topicId) {
+        String sql = "delete from t_reply where topic_id = ?";
+        Integer deleteReply = update(connection, sql, topicId);
+        return deleteReply;
+    }
+
+
+    /**
+    * @author wk
     * @Description 根据评论id，获取对应的日志id
     * @Date 10:07 2022/4/3
     * @Param
@@ -103,7 +119,8 @@ public class ReplyDAOImpl extends BaseDAO<Reply> implements ReplyDAO {
     @Override
     public List<Reply> getReplyListByUserId(Connection connection, Integer userBasicId) {
         String sql = "select reply_id id,reply_content content,reply_date replyDate from t_reply where user_basic_id = ?";
-        return null;
+        List<Reply> replyList = getForList(connection, sql, userBasicId);
+        return replyList;
     }
 
     /**

@@ -11,14 +11,14 @@
     <script th:src="@{/js/login.js}"></script>
 </head>
 <body>
-<div class="qq-out-wrapper">
-    <div class="qq-container">
-        <h1 class="qq-title">欢迎登录个人日志系统</h1>
+<div class="login-out-wrapper">
+    <div class="login-container">
+        <h1 class="login-title">欢迎登录个人日志系统</h1>
         <form th:action="@{/user.do}" method="post" name="login-form"
               class="login-form">
             <input type="hidden" name="choice" value="login">
             <input type="hidden" name="mode" value="login">
-            <ul class="qq-login-list">
+            <ul class="login-login-list">
                 <li>
                     账 号：<input type="number" name="loginId" class="login-id">
                     <span th:if="${session.loginError}" class="login-validation validation">
@@ -30,7 +30,7 @@
                     密 码：<input type="password" name="password" class="login-password">
                 </li>
             </ul>
-            <div class="qq-login-btn-wrapper">
+            <div class="login-login-btn-wrapper">
                 <div class="btn">
                     <input type="submit" value="登录" class="login-btn">
                     <a th:href="@{/user.do?choice=intoRegister}" class="register-btn">注册</a>

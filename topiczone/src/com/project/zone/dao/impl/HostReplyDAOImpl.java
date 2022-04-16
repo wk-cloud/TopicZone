@@ -63,6 +63,21 @@ public class HostReplyDAOImpl extends BaseDAO<HostReply> implements HostReplyDAO
     }
 
     /**
+    * @author wk
+    * @Description 根据评论id，删除评论的回复
+    * @Date 20:03 2022/4/16
+    * @Param
+    * @Return
+    */
+
+    @Override
+    public Integer deleteHostReplyByReplyId(Connection connection, Integer replyId) {
+        String sql = "delete from t_host_reply where reply_id = ?";
+        Integer deleteHostReply = update(connection,sql,replyId);
+        return deleteHostReply;
+    }
+
+    /**
    * @author wk
    * @Description  根据回复id，查询相关联的作者回复
    * @Date 21:49 2022/3/25

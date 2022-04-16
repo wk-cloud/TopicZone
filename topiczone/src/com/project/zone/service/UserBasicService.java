@@ -40,6 +40,16 @@ public interface UserBasicService {
 
     public abstract List<UserBasic> getFriendList(UserBasic userBasic) throws SQLException;
 
+
+    /**
+    * @author wk
+    * @Description 根据页码和用户信息，返回好友列表
+    * @Date 22:24 2022/4/14
+    * @Param
+    * @Return
+    */
+
+    public abstract List<UserBasic> getFriendListByPageNumber(UserBasic userBasic,Integer pageNumber) throws SQLException;
     /**
     * @author wk
     * @Description 根据好友id，获取用户
@@ -49,6 +59,16 @@ public interface UserBasicService {
     */
 
     public abstract List<UserBasic> getUserListByFriendId(Integer friendId) throws SQLException;
+
+    /**
+    * @author wk
+    * @Description 获取所有用户信息
+    * @Date 22:46 2022/4/14
+    * @Param
+    * @Return
+    */
+
+    public abstract List<UserBasic> getUserBasicList() throws SQLException;
 
     /**
     * @author wk

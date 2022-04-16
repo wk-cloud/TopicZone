@@ -11,14 +11,17 @@
     <script th:src="@{/js/index.js}"></script>
 </head>
 <body>
-<div class="qq-zone-wrapper">
+<div class="topic-zone-wrapper">
     <!-- 顶部-->
-    <div class="qq-zone-top">
-        <h1 class="qq-zone-title">欢迎使用日志管理系统</h1>
+    <div class="topic-zone-top">
+        <h1 class="topic-zone-title">欢迎使用日志管理系统</h1>
         <div class="page-native">
             <ul>
-                <li>
-                    <span th:text="|欢迎进入${session.friend.nickName}的空间|" class="welcome-title">欢迎进入往事随风的空间</span>
+                <li class="welcome-li">
+                    <p class="welcome-title">欢迎进入</p>
+                    <p th:text="|${session.friend.nickName}|" class="welcome-title userNickName">往事随风</p>
+                    <p class="welcome-title">的空间</p>
+                    <img th:src="@{|/imgs/${session.friend.headImage}|}" alt="头像" class="user-head-image">
                 </li>
                 <li>
                     <a th:if="${session.userBasic.id != session.friend.id}"
@@ -46,11 +49,11 @@
         </div>
     </div>
     <!-- 中间内容区-->
-    <div class="qq-zone-center">
+    <div class="topic-zone-center">
         <!-- 好友列表-->
-        <div class="qq-zone-friend-list-wrapper">
+        <div class="topic-zone-friend-list-wrapper">
             <h2>关注列表</h2>
-            <ul class="qq-zone-friend-list">
+            <ul class="topic-zone-friend-list">
                 <li th:if="${#lists.isEmpty(session.friend.friendList)}" class="friend-list-null">关注列表为空</li>
                 <li th:unless="${#lists.isEmpty(session.friend.friendList)}"
                     th:each="friend : ${session.friend.friendList}">
@@ -60,15 +63,15 @@
             </ul>
         </div>
         <!-- 日志列表-->
-        <div class="qq-zone-topic-list-wrapper">
+        <div class="topic-zone-topic-list-wrapper">
             <h2>日志列表</h2>
             <a th:if="${session.userBasic.id == session.friend.id}"
                th:href="@{|/topic.do?choice=publishPage&id=${session.userBasic.id}|}" class="publish">发布日志</a>
-            <table class="qq-zone-topic-table">
+            <table class="topic-zone-topic-table">
                 <tr>
                     <th colspan="4" th:if="${#lists.isEmpty(session.friend.topicList)}">暂无发表的日志</th>
                 </tr>
-                <tr class="qq-zone-topic-table-head">
+                <tr class="topic-zone-topic-table-head">
                     <th>ID</th>
                     <th>标题</th>
                     <th>发布时间</th>
@@ -77,7 +80,7 @@
                 <tr th:unless="${#lists.isEmpty(session.friend.topicList)}"
                     th:each="topic : ${session.friend.topicList}">
                     <td th:text="${topic.getId()}">1</td>
-                    <td>
+                    <td class="topic-title">
                         <a th:href="@{|/topic.do?choice=topicDetail&id=${topic.id}&visitId=${session.userBasic.id}|}"
                            th:text="${topic.getTitle()}"></a>
                     </td>
@@ -105,7 +108,7 @@
         </div>
     </div>
     <!-- 底部-->
-    <div class="qq-zone-bottom">
+    <div class="topic-zone-bottom">
         <p>&copy;版权所有 · ☆往事随風☆</p>
     </div>
 </div>

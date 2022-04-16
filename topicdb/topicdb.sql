@@ -36,7 +36,6 @@ topic_publish_date TIMESTAMP NOT NULL,
 user_basic_id INT(11) NOT NULL
 )CHARACTER SET 'utf8';
 
-DROP TABLE t_user_detail;
 
 # 创建评论表(t_reply)
 CREATE TABLE IF NOT EXISTS t_reply(
@@ -72,8 +71,6 @@ KEY FK_friend_base_fid(friend_id)
 )CHARACTER SET 'utf8';
 
 
-SHOW INDEX FROM t_reply;
-DROP DATABASE topicdb;
 
 
 # 删除数据库

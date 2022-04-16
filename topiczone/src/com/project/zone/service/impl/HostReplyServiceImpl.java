@@ -70,6 +70,21 @@ public class HostReplyServiceImpl implements HostReplyService {
 
     /**
     * @author wk
+    * @Description 根据评论id，删除评论的回复
+    * @Date 20:05 2022/4/16
+    * @Param
+    * @Return
+    */
+
+    @Override
+    public Integer deleteHostReplyByReplyId(Integer replyId) throws SQLException {
+        Connection connection = JDBCUtils.getConnection();
+        Integer deleteHostReply = hostReplyDAO.deleteHostReplyByReplyId(connection, replyId);
+        return deleteHostReply;
+    }
+
+    /**
+    * @author wk
     * @Description 根据评论id，获取用户回复
     * @Date 21:46 2022/3/25
     * @Param
@@ -87,7 +102,9 @@ public class HostReplyServiceImpl implements HostReplyService {
             for(int i = 0;i < hostReplyList.size();i++){
                 hostReplyUserId = getHostReplyUserId(hostReplyList.get(i).getId());
                 hostReplyUser = userBasicService.getUserBasicById(hostReplyUserId);
-                hostReplyList.get(i).setAuthor(hostReplyUser);
+                if(hostReplyUser != null){
+                    hostReplyList.get(i).setAuthor(hostReplyUser);
+                }
             }
         }
         return hostReplyList;

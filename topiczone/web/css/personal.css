@@ -11,7 +11,9 @@ input{
     padding:0 20px;
     text-align: center;
     border:1px solid red;
-    background:rgba(255,255,255,.6);
+    background: #ffefba; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #ffefba, #ffffff); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #ffefba, #ffffff);
 }
 
 .personal-wrapper .personal-title{
@@ -52,7 +54,7 @@ input{
     margin-left:20px;
     margin-right: 14px;
     cursor: pointer;
-    background: orchid;
+    background: #66CCCC;
     color:white;
     font:14px "幼圆";
     border:1px solid deepskyblue;
@@ -67,7 +69,7 @@ input{
     width:90px;
     height:30px;
     cursor: pointer;
-    background: orchid;
+    background: #66CCCC;
     color:white;
     border:1px solid deepskyblue;
     text-decoration: none;
