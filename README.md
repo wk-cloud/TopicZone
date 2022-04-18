@@ -1,4 +1,4 @@
-TopicZone开发文档
+# TopicZone开发文档
 
 
 
@@ -120,6 +120,8 @@ TopicZone开发文档
 
 
 ## 五、运行结果展示
+
+[个人日志系统功能在线演示（哔哩哔哩）](https://www.bilibili.com/video/BV1fi4y1U7cq/)
 
 
 
@@ -800,20 +802,22 @@ package com.project.zone.controller;
 
 
 import com.project.myssm.util.Tools;
-import com.project.zone.bean.Reply;
-import com.project.zone.bean.Topic;
-import com.project.zone.bean.UserBasic;
-import com.project.zone.bean.UserDetail;
+import com.project.zone.bean.*;
 import com.project.zone.service.*;
-import com.project.zone.service.impl.TopicServiceImpl;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName UserController
@@ -873,7 +877,6 @@ public class UserController {
         return "register";
     }
 
-
     /**
      * @author wk
      * @Description 进入登录页面
@@ -923,27 +926,48 @@ public class UserController {
 
         UserBasic userBasic = userBasicService.getUserBasicById(userBasicId);
 
+        // 查找是否存在好友
         List<UserBasic> friendList = userBasicService.getFriendList(userBasic);
-        Integer hostReplyList = hostReplyService.getHostReplyUserId(userBasicId);
+        // 查找是否是别人的好友
+        List<UserBasic> userList = userBasicService.getUserListByFriendId(userBasicId);
+        List<HostReply> hostReplyList = hostReplyService.getHostReplyByUserId(userBasicId);
         List<Reply> replyList = replyService.getReplyListByUserId(userBasicId);
         List<Topic> topicList = topicService.getTopicList(userBasic);
         UserDetail userDetail = userDetailService.getUserDetailById(userBasicId);
 
         if (friendList != null) {
-            Integer deleteFriend = userBasicService.deleteFriendByUserId(userBasicId);
+            userBasicService.deleteFriendByUserId(userBasicId);
+        }
+        if (userList != null) {
+            userBasicService.deleteFriend(userBasicId);
         }
 
         if (hostReplyList != null) {
-            Integer deleteHostReply = hostReplyService.deleteHostReply(userBasicId);
+            hostReplyService.deleteHostReplyByUserId(userBasicId);
         }
         if (replyList != null) {
-            Integer deleteReply = replyService.deleteReplyByUserId(userBasicId);
+            List<HostReply> hostReplyList1 = null;
+            for(int i = 0;i < replyList.size();i++){
+                hostReplyList1 = hostReplyService.getHostReplyList(replyList.get(i).getId());
+                if(hostReplyList1 != null){
+                    hostReplyService.deleteHostReplyByReplyId(replyList.get(i).getId());
+                }
+            }
+            replyService.deleteReplyByUserId(userBasicId);
         }
         if (topicList != null) {
-            Integer deleteTopic = topicService.deleteTopicByUserId(userBasicId);
+            List<Reply> replyList1 = null;
+           for(int i = 0;i < topicList.size();i++){
+                replyList1 = replyService.getReplyList(topicList.get(i));
+                if(replyList1 != null){
+                    replyService.deleteReplyByTopicId(topicList.get(i).getId());
+                }
+           }
+
+            topicService.deleteTopicByUserId(userBasicId);
         }
         if (userDetail != null) {
-            Integer deleteUserDetail = userDetailService.deleteUserDetail(userBasicId);
+            userDetailService.deleteUserDetail(userBasicId);
         }
         Integer deleteUserBasic = userBasicService.deleteUserBasicByUserId(userBasicId);
         if (deleteUserBasic > 0) {
@@ -1095,7 +1119,7 @@ public class UserController {
 
     public String personal(Integer userBasicId, HttpSession session) throws SQLException {
         Map<String, Boolean> errorMap = new HashMap<>();
-        session.setAttribute("errorMap",errorMap);
+        session.setAttribute("errorMap", errorMap);
         UserBasic userBasic = userBasicService.getUserBasicById(userBasicId);
         UserDetail userDetail = userDetailService.getUserDetailById(userBasicId);
         if (userBasic != null) {
@@ -1123,28 +1147,28 @@ public class UserController {
         Map<String, Boolean> errorMap = new HashMap<>();
         if (userBasicId1 != null && userBasicId1 != userBasicId) {
             if (Tools.isNotEmpty(mode) && "personal".equals(mode)) {
-                errorMap.put("phoneError",true);
-            }else {
-                errorMap.put("phoneError",false);
+                errorMap.put("phoneError", true);
+            } else {
+                errorMap.put("phoneError", false);
             }
         }
-        if(userBasicId2 != null && userBasicId2 != userBasicId){
+        if (userBasicId2 != null && userBasicId2 != userBasicId) {
             if (Tools.isNotEmpty(mode) && "personal".equals(mode)) {
-                errorMap.put("emailError",true);
-            }else {
-                errorMap.put("emailError",false);
+                errorMap.put("emailError", true);
+            } else {
+                errorMap.put("emailError", false);
             }
         }
-        if(userBasicId3 != null && userBasicId3 != userBasicId){
+        if (userBasicId3 != null && userBasicId3 != userBasicId) {
             if (Tools.isNotEmpty(mode) && "personal".equals(mode)) {
-                errorMap.put("cardIdError",true);
-            }else {
-                errorMap.put("cardIdError",false);
+                errorMap.put("cardIdError", true);
+            } else {
+                errorMap.put("cardIdError", false);
             }
         }
-        if(!errorMap.isEmpty()){
+        if (!errorMap.isEmpty()) {
             System.out.println("我被调用了");
-            session.setAttribute("errorMap",errorMap);
+            session.setAttribute("errorMap", errorMap);
             return "personal";
         }
 
@@ -1171,11 +1195,6 @@ public class UserController {
      */
 
     public String friendManage(String mode, String keyword, Integer userBasicId, Integer pageNumber, HttpSession session) throws SQLException {
-        // 获取当前用户的基础信息
-        UserBasic userBasic = userBasicService.getUserBasicById(userBasicId);
-        // 获取当前用户的好友列表
-        List<UserBasic> friendList = userBasicService.getFriendList(userBasic);
-
         // 展示好友列表或搜索结果列表的标识，false：展示好友列表，true：展示搜索结果列表
         boolean flag = false;
         // 添加好友标识,false：不能添加，true：可以添加
@@ -1184,6 +1203,13 @@ public class UserController {
         if (pageNumber == null) {
             pageNumber = 1;
         }
+
+        // 获取当前用户的基础信息
+        UserBasic userBasic = userBasicService.getUserBasicById(userBasicId);
+        // 获取当前用户的好友列表（全体）
+        List<UserBasic> friendList = userBasicService.getFriendList(userBasic);
+        // 获取当前用户的好友列表（分页）
+        List<UserBasic> friendList1 = userBasicService.getFriendListByPageNumber(userBasic, pageNumber);
 
         // 如果 mode 等于 'search' 则是通过搜索框发来请求
         if (Tools.isNotEmpty(mode) && "search".equals(mode)) {
@@ -1198,7 +1224,7 @@ public class UserController {
         } else {
             // 不是通过搜索框发来的请求
             flag = false;
-            session.setAttribute("flag", flag);
+            session.setAttribute("flag", false);
             Object keyword1 = session.getAttribute("keyword");
             if (keyword1 != null) {
                 keyword = (String) keyword1;
@@ -1210,7 +1236,7 @@ public class UserController {
         if (flag) {
             // 获取搜索到的用户
             List<UserBasic> userBasicList = userBasicService.getUserBasicByKeyWord(keyword, pageNumber);
-            // 将获取到的用户，和当前用户的好友进行比对
+            // 将获取到的全体用户，和当前用户的好友进行比对
             if (!userBasicList.isEmpty() && !friendList.isEmpty()) {
                 for (int i = 0; i < userBasicList.size(); i++) {
                     if (userBasicList.get(i).getLoginId().equals(userBasic.getLoginId())) {
@@ -1239,7 +1265,6 @@ public class UserController {
                     userBasicList.get(i).setAddFriend(isAddFriend);
                 }
             }
-
             // 获取用户总记录数
             Long userBasicCount = userBasicService.getUserBasicCountByKeyWord(keyword);
             // 总页数
@@ -1254,7 +1279,7 @@ public class UserController {
 
         } else {
             session.setAttribute("userBasic", userBasic);
-            session.setAttribute("friendList", friendList);
+            session.setAttribute("friendList", friendList1);
 
             // 获取好友总记录数
             Long friendCount = userBasicService.getFriendCount(userBasic);
@@ -1276,9 +1301,21 @@ public class UserController {
      */
 
     public String addFriend(Integer userBasicId, Integer friendId) throws SQLException {
-        Integer addFriend = userBasicService.addFriend(userBasicId, friendId);
-        if (addFriend > 0) {
-            return "redirect:user.do?choice=friendManage&userBasicId=" + userBasicId;
+        UserBasic userBasic = userBasicService.getUserBasicById(userBasicId);
+        List<UserBasic> friendList = userBasicService.getFriendList(userBasic);
+        // 判断要关注的用户，是否已经被关注
+        boolean flag = true;
+        for (int i = 0; i < friendList.size(); i++) {
+            if (friendList.get(i).getId() == friendId) {
+                flag = false;
+                break;
+            }
+        }
+        if (flag) {
+            Integer addFriend = userBasicService.addFriend(userBasicId, friendId);
+            if (addFriend > 0) {
+                return "redirect:user.do?choice=friendManage&userBasicId=" + userBasicId;
+            }
         }
         return "error";
     }
@@ -1307,58 +1344,137 @@ public class UserController {
 ### 7.10 Service层：以 UserBasicService 为例
 
 ``` java
-package com.project.zone.service;
+package com.project.zone.service.impl;
 
+import com.project.myssm.util.JDBCUtils;
 import com.project.zone.bean.UserBasic;
+import com.project.zone.dao.impl.UserBasicDAOImpl;
+import com.project.zone.service.UserBasicService;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  用户基本信息的业务模型接口
- *
- * */
-public interface UserBasicService {
+ * @ClassName UserBasicServiceImpl
+ * @Description UserBasicService的实现类
+ * @Author wk
+ * @Date 2022/3/23 15:45
+ * @Version 1.0
+ */
+public class UserBasicServiceImpl implements UserBasicService {
+
+    private UserBasicDAOImpl userBasicDAO = null;
 
     /**
     * @author wk
-    * @Description 添加用户基础信息（注册）
-    * @Date 22:13 2022/3/23
-    * @Param
-    * @Return
-    */
-    public  abstract int addUserBasic(UserBasic userBasic) throws SQLException;
-
-    /**
-    * @author wk
-    * @Description  通过密码和账户查询用户信息,可用于登录功能
-     * @Date 15:43 2022/3/23
+    * @Description 注册
+    * @Date 9:26 2022/4/2
     * @Param
     * @Return
     */
 
-    public abstract UserBasic getUserBasic(String loginId,String password) throws SQLException;
+    @Override
+    public int addUserBasic(UserBasic userBasic) throws SQLException {
+        Connection connection = JDBCUtils.getConnection();
+        int register = userBasicDAO.addUserBasic(connection, userBasic);
+        return register;
+    }
+
+    /**
+     * @author wk
+     * @Description 登录
+     * @Date 15:45 2022/3/23
+     * @Param
+     * @Return
+     */
+
+    @Override
+    public UserBasic getUserBasic(String loginId, String password) throws SQLException {
+        Connection connection = JDBCUtils.getConnection();
+        UserBasic userBasic = userBasicDAO.getUserBasic(connection, loginId, password);
+        return userBasic;
+    }
+
+    /**
+     * @author wk
+     * @Description 根据用户基础信息，获取好友列表
+     * @Date 15:59 2022/3/23
+     * @Param
+     * @Return
+     */
+
+    @Override
+    public List<UserBasic> getFriendList(UserBasic userBasic) throws SQLException {
+        Connection connection = JDBCUtils.getConnection();
+        List<UserBasic> friendIdListObj = userBasicDAO.getFriendList(connection, userBasic);
+        ArrayList<UserBasic> friendList = new ArrayList<>(friendIdListObj.size());
+        UserBasic friend = null;
+        for (int i = 0; i < friendIdListObj.size(); i++) {
+            friend = userBasicDAO.getUserBasicById(connection,friendIdListObj.get(i).getId());
+            friendList.add(friend);
+        }
+        return friendList;
+    }
 
     /**
     * @author wk
-    * @Description 好友列表
-    * @Date 15:59 2022/3/23
+    * @Description 根据页码和用户信息，获取好友列表
+    * @Date 22:24 2022/4/14
     * @Param
     * @Return
     */
 
-    public abstract List<UserBasic> getFriendList(UserBasic userBasic) throws SQLException;
+    @Override
+    public List<UserBasic> getFriendListByPageNumber(UserBasic userBasic, Integer pageNumber) throws SQLException {
+        Connection connection = JDBCUtils.getConnection();
+        List<UserBasic> friendIdListObj = userBasicDAO.getFriendListByPageNumber(connection, userBasic,pageNumber);
+        ArrayList<UserBasic> friendList = new ArrayList<>(friendIdListObj.size());
+        UserBasic friend = null;
+        for (int i = 0; i < friendIdListObj.size(); i++) {
+            friend = userBasicDAO.getUserBasicById(connection,friendIdListObj.get(i).getId());
+            friendList.add(friend);
+        }
+        return friendList;
+    }
+
+    /**
+    * @author wk
+    * @Description 根据好友id，获取用户id
+    * @Date 21:15 2022/4/13
+    * @Param
+    * @Return
+    */
+
+    @Override
+    public List<UserBasic> getUserListByFriendId(Integer friendId) throws SQLException {
+        Connection connection = JDBCUtils.getConnection();
+        List<UserBasic> userList = userBasicDAO.getUserIdByFriendId(connection, friendId);
+        return userList;
+    }
+
+    @Override
+    public List<UserBasic> getUserBasicList() throws SQLException {
+        Connection connection = JDBCUtils.getConnection();
+        List<UserBasic> userBasicList = userBasicDAO.getUserBasicList(connection);
+        return userBasicList;
+    }
 
     /**
     * @author wk
     * @Description 好友总数
-    * @Date 9:55 2022/4/2
+    * @Date 9:56 2022/4/2
     * @Param
     * @Return
     */
 
-    public abstract Long getFriendCount(UserBasic userBasic) throws SQLException;
+    @Override
+    public Long getFriendCount(UserBasic userBasic) throws SQLException {
+        Connection connection = JDBCUtils.getConnection();
+        Long friendCount = userBasicDAO.getFriendCount(connection, userBasic);
+        return friendCount;
+    }
 
     /**
     * @author wk
@@ -1368,67 +1484,103 @@ public interface UserBasicService {
     * @Return
     */
 
-    public abstract Integer addFriend(Integer userBasicId,Integer friendId) throws SQLException;
+    @Override
+    public Integer addFriend(Integer userBasicId, Integer friendId) throws SQLException {
+        Connection connection = JDBCUtils.getConnection();
+        Integer addFriend = userBasicDAO.addFriend(connection, userBasicId, friendId);
+        return addFriend;
+    }
 
     /**
     * @author wk
-    * @Description 删除好友
+    * @Description 根据好友id,删除好友
     * @Date 15:15 2022/4/2
     * @Param
     * @Return
     */
 
-    public abstract Integer deleteFriend(Integer friendId) throws SQLException;
+    @Override
+    public Integer deleteFriend(Integer friendId) throws SQLException {
+        Connection connection = JDBCUtils.getConnection();
+        Integer deleteFriend = userBasicDAO.deleteFriend(connection, friendId);
+        return deleteFriend;
+    }
 
     /**
     * @author wk
     * @Description 根据用户id，删除用户基础信息
-    * @Date 21:22 2022/4/3
+    * @Date 21:28 2022/4/3
     * @Param
     * @Return
     */
 
-    public abstract Integer deleteUserBasicByUserId(Integer userBasicId) throws SQLException;
+    @Override
+    public Integer deleteUserBasicByUserId(Integer userBasicId) throws SQLException {
+        Connection connection = JDBCUtils.getConnection();
+        Integer deleteUserBasic = userBasicDAO.deleteUserBasicByUserId(connection, userBasicId);
+        return deleteUserBasic;
+    }
 
     /**
     * @author wk
-    * @Description 根据用户id，删除用户好友信息
-    * @Date 21:24 2022/4/3
+    * @Description 根据用户id，删除好友信息
+    * @Date 21:29 2022/4/3
     * @Param
     * @Return
     */
 
-    public abstract Integer deleteFriendByUserId(Integer userBasicId) throws SQLException;
+    @Override
+    public Integer deleteFriendByUserId(Integer userBasicId) throws SQLException {
+        Connection connection = JDBCUtils.getConnection();
+        Integer deleteFriend = userBasicDAO.deleteFriendByUserId(connection,userBasicId);
+        return deleteFriend;
+    }
+
 
     /**
     * @author wk
-    * @Description 根据用户id，获取用户基本信息
-    * @Date 16:07 2022/3/23
+    * @Description 根据用户id，查询特定用户信息
+    * @Date 16:24 2022/3/23
     * @Param
     * @Return
     */
 
-    public abstract UserBasic getUserBasicById(Integer userBasicId) throws SQLException;
+    @Override
+    public UserBasic getUserBasicById(Integer id) throws SQLException {
+        Connection connection = JDBCUtils.getConnection();
+        UserBasic userBasicById = userBasicDAO.getUserBasicById(connection, id);
+        return userBasicById;
+    }
 
     /**
-    * @author wk
-    * @Description 根据关键字，查询用户信息
-    * @Date 9:24 2022/4/2
-    * @Param
-    * @Return
-    */
+     * @author wk
+     * @Description 根据关键字，查询用户信息
+     * @Date 9:27 2022/4/2
+     * @Param
+     * @Return
+     */
 
-    public abstract List<UserBasic> getUserBasicByKeyWord(String keyword,Integer pageNumber) throws SQLException;
+    @Override
+    public List<UserBasic> getUserBasicByKeyWord(String keyword, Integer pageNumber) throws SQLException {
+        Connection connection = JDBCUtils.getConnection();
+        List<UserBasic> userBasicByKeyWord = userBasicDAO.getUserBasicByKeyWord(connection, keyword, pageNumber);
+        return userBasicByKeyWord;
+    }
 
     /**
     * @author wk
     * @Description 根据关键字，查询用户总数
-    * @Date 9:39 2022/4/2
+    * @Date 9:40 2022/4/2
     * @Param
     * @Return
     */
 
-    public abstract Long getUserBasicCountByKeyWord(String keyword) throws SQLException;
+    @Override
+    public Long getUserBasicCountByKeyWord(String keyword) throws SQLException {
+        Connection connection = JDBCUtils.getConnection();
+        Long userBasicCount = userBasicDAO.getUserBasicCountByKeyWord(connection, keyword);
+        return userBasicCount;
+    }
 }
 
 ```
@@ -1438,58 +1590,138 @@ public interface UserBasicService {
 ### 7.11 DAO层：以 UserBasicDAO 为例
 
 ``` java
-package com.project.zone.dao;
+package com.project.zone.dao.impl;
 
 import com.project.zone.bean.UserBasic;
+import com.project.zone.dao.UserBasicDAO;
+import com.project.zone.dao.basedao.BaseDAO;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  用户基础信息接口
- *
- * */
-public interface UserBasicDAO {
+ * @ClassName UserBasicDAOImpl
+ * @Description UserBasicDAO的实现类
+ * @Author wk
+ * @Date 2022/3/23 15:33
+ * @Version 1.0
+ */
+public class UserBasicDAOImpl extends BaseDAO<UserBasic> implements UserBasicDAO {
+
+    private UserBasic userBasic = new UserBasic();
 
     /**
     * @author wk
-    * @Description 向数据库中添加用户基础信息
+    * @Description 向数据库添加用户基本信息
     * @Date 22:10 2022/3/23
     * @Param
     * @Return
     */
 
-    public abstract int addUserBasic(Connection connection,UserBasic userBasic);
+    @Override
+    public int addUserBasic(Connection connection, UserBasic userBasic) {
+        String sql = "insert into t_user_basic(login_id,nick_name,password,head_image) values(?,?,?,?)";
+        int addUserBasic = update(connection, sql, userBasic.getLoginId(), userBasic.getNickName(), userBasic.getPassword(), userBasic.getHeadImage());
+        return addUserBasic;
+    }
+
+    /**
+     * @author wk
+     * @Description 根据账号和密码获取用户基本信息
+     * @Date 15:41 2022/3/23
+     * @Param
+     * @Return
+     */
+
+    @Override
+    public UserBasic getUserBasic(Connection connection, String loginId, String password) {
+        String sql = "select user_basic_id id, login_id loginId,nick_name nickName,password password,head_image headImage from t_user_basic where " +
+                "login_id = ? and password = ?";
+        UserBasic userBasic = getInstance(connection, sql, loginId, password);
+        return userBasic;
+    }
+
+    /**
+     * @author wk
+     * @Description 根据用户基础信息，获取好友列表
+     * @Date 15:58 2022/3/23
+     * @Param
+     * @Return
+     * @return
+     */
+
+    @Override
+    public List<UserBasic> getFriendList(Connection connection, UserBasic userBasic) {
+        String sql = "select friend_id id from t_friends where user_id = ?";
+        // 查询到的是好友id，不能直接作为UserBasic对象返回，要通过UserBasic构造器初始化后再返回
+        List<UserBasic> friendIdList = getForList(connection, sql, userBasic.getId());
+        ArrayList<UserBasic> friendIdListObj = new ArrayList<>(friendIdList.size());
+        UserBasic userBasic1 = null;
+        for(int i = 0;i< friendIdList.size();i++){
+            userBasic1 = new UserBasic(friendIdList.get(i).getId());
+            friendIdListObj.add(userBasic1);
+        }
+        return friendIdListObj;
+    }
 
     /**
     * @author wk
-    * @Description 根据账号 和 密码 获取用户基础信息
-    * @Date 15:38 2022/3/23
+    * @Description 根据页码和用户信息，查询好友列表
+    * @Date 22:22 2022/4/14
     * @Param
     * @Return
     */
 
-    public abstract UserBasic getUserBasic(Connection connection,String loginId,String password);
+    @Override
+    public List<UserBasic> getFriendListByPageNumber(Connection connection, UserBasic userBasic, Integer pageNumber) {
+        String sql = "select friend_id id from t_friends where user_id = ? limit ?,5";
+        // 查询到的是好友id，不能直接作为UserBasic对象返回，要通过UserBasic构造器初始化后再返回
+        List<UserBasic> friendIdList = getForList(connection, sql, userBasic.getId(),(pageNumber - 1) * 5);
+        ArrayList<UserBasic> friendIdListObj = new ArrayList<>(friendIdList.size());
+        UserBasic userBasic1 = null;
+        for(int i = 0;i< friendIdList.size();i++){
+            userBasic1 = new UserBasic(friendIdList.get(i).getId());
+            friendIdListObj.add(userBasic1);
+        }
+        return friendIdListObj;
+    }
 
     /**
     * @author wk
-    * @Description 根据用户基础信息，获取好友列表
-    * @Date 15:58 2022/3/23
+    * @Description 根据好友id，获取用户id
+    * @Date 21:12 2022/4/13
     * @Param
     * @Return
     */
 
-    public abstract List<UserBasic> getFriendList(Connection connection,UserBasic userBasic);
+    @Override
+    public List<UserBasic> getUserIdByFriendId(Connection connection, Integer friendId) {
+        String sql = "select user_id id from t_friends where friend_id = ?";
+        List<UserBasic> userIdList = getForList(connection, sql, friendId);
+        ArrayList<UserBasic> userList = new ArrayList<>(userIdList.size());
+        UserBasic user = null;
+        for(int i = 0;i < userIdList.size();i++){
+            user = new UserBasic(userIdList.get(i).getId());
+            userList.add(user);
+        }
+        return userList;
+    }
 
     /**
     * @author wk
-    * @Description 根据用户，获取用户好友总数
-    * @Date 9:52 2022/4/2
+    * @Description 根据用户，获取好友总数
+    * @Date 9:53 2022/4/2
     * @Param
     * @Return
     */
 
-    public abstract Long getFriendCount(Connection connection,UserBasic userBasic);
+    @Override
+    public Long getFriendCount(Connection connection, UserBasic userBasic) {
+        String sql = "select count(*) from t_friends where user_id = ?";
+        Long friendCount = getValue(connection, sql, userBasic.getId());
+        return friendCount;
+    }
 
     /**
     * @author wk
@@ -1499,7 +1731,12 @@ public interface UserBasicDAO {
     * @Return
     */
 
-    public abstract Integer addFriend(Connection connection,Integer userBasicId,Integer friendId);
+    @Override
+    public Integer addFriend(Connection connection, Integer userBasicId, Integer friendId) {
+        String sql = "insert into t_friends(user_id,friend_id) values(?,?)";
+        int addFriend = update(connection, sql, userBasicId, friendId);
+        return addFriend;
+    }
 
     /**
     * @author wk
@@ -1509,59 +1746,107 @@ public interface UserBasicDAO {
     * @Return
     */
 
-    public abstract Integer deleteFriend(Connection connection,Integer friendId);
+    @Override
+    public Integer deleteFriend(Connection connection, Integer friendId) {
+        String sql = "delete from t_friends where friend_id = ?";
+        int deleteFriend = update(connection, sql, friendId);
+        return deleteFriend;
+    }
 
     /**
     * @author wk
     * @Description 根据用户id，删除用户基础信息
-    * @Date 21:24 2022/4/3
+    * @Date 21:26 2022/4/3
     * @Param
     * @Return
     */
 
-    public abstract Integer deleteUserBasicByUserId(Connection connection,Integer userBasicId);
+    @Override
+    public Integer deleteUserBasicByUserId(Connection connection, Integer userBasicId) {
+        String sql = "delete from t_user_basic where user_basic_id = ?";
+        Integer deleteUserBasic = update(connection, sql, userBasicId);
+        return deleteUserBasic;
+    }
 
     /**
     * @author wk
     * @Description 根据用户id，删除好友信息
-    * @Date 21:25 2022/4/3
+    * @Date 21:26 2022/4/3
     * @Param
     * @Return
     */
 
-    public abstract Integer deleteFriendByUserId(Connection connection,Integer userBasicId);
-
+    @Override
+    public Integer deleteFriendByUserId(Connection connection, Integer userBasicId) {
+        String sql = "delete from t_friends where user_id = ?";
+        Integer deleteFriend = update(connection,sql,userBasicId);
+        return deleteFriend;
+    }
 
     /**
      * @author wk
-     * @Description 根据用户id获取，用户基本信息
-     * @Date 16:04 2022/3/23
+     * @Description 根据用户id，获取用户基础信息
+     * @Date 16:06 2022/3/23
      * @Param
      * @Return
      */
 
-    public abstract UserBasic getUserBasicById(Connection connection,Integer userBasicId);
+    @Override
+    public UserBasic getUserBasicById(Connection connection, Integer userBasicId) {
+        String sql = "select user_basic_id id, login_id loginId,nick_name nickName,password password,head_image headImage from t_user_basic where " +
+                "user_basic_id = ?";
+        UserBasic user = getInstance(connection, sql, userBasicId);
+        return user;
+    }
 
     /**
     * @author wk
-    * @Description 根据关键字查询用户信息
-    * @Date 9:18 2022/4/2
+    * @Description 获取全部用户信息
+    * @Date 22:45 2022/4/14
     * @Param
     * @Return
     */
 
-    public abstract List<UserBasic> getUserBasicByKeyWord(Connection connection,String keyword,Integer pageNumber);
+    @Override
+    public List<UserBasic> getUserBasicList(Connection connection) {
+        String sql = "select user_basic_id id, login_id loginId,nick_name nickName,password password,head_image headImage from t_user_basic";
+        List<UserBasic> userList = getForList(connection, sql);
+        return userList;
+    }
+
+    /**
+    * @author wk
+    * @Description 根据关键字，查询用户信息
+    * @Date 9:19 2022/4/2
+    * @Param
+    * @Return
+    */
+
+    @Override
+    public List<UserBasic> getUserBasicByKeyWord(Connection connection, String keyword, Integer pageNumber) {
+        String sql = "select user_basic_id id, login_id loginId,nick_name nickName,password password,head_image headImage from t_user_basic where " +
+                "login_id like ? limit ?,5" ;
+        String param = "%" + keyword + "%";
+        Integer pageNumber1 = pageNumber;
+        List<UserBasic> userBasicList = getForList(connection,sql, param, (pageNumber - 1) * 5);
+        return userBasicList;
+    }
 
     /**
     * @author wk
     * @Description 根据关键字,查询用户总数
-    * @Date 9:34 2022/4/2
+    * @Date 9:37 2022/4/2
     * @Param
     * @Return
     */
 
-    public abstract Long getUserBasicCountByKeyWord(Connection connection,String keyword);
-
+    @Override
+    public Long getUserBasicCountByKeyWord(Connection connection, String keyword) {
+        String sql = "select count(*) from t_user_basic where login_id like ? ";
+        String param = "%" + keyword + "%";
+        Long userBasicCount = getValue(connection, sql, param);
+        return userBasicCount;
+    }
 }
 
 ```
@@ -1647,3 +1932,10 @@ public interface UserBasicDAO {
 
 [基于 JavaSE + MySQL+ JDBC 的学生信息管理系统(简易版)](https://blog.csdn.net/m0_47214030/article/details/123459996?spm=1001.2014.3001.5501)
 
+
+
+## 十、最后的话
+
+**点赞评论加关注，你的支持是我创作的动力**
+
+![img](https://img-blog.csdnimg.cn/851df1413ed044778cd940113db4f54b.png#pic_center)
