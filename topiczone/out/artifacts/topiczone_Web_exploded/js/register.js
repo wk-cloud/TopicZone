@@ -179,9 +179,7 @@ window.onload = function () {
 };
 
 // 判断字符串是否为空
+// 判断字符串是否为空
 function isEmpty(value) {
-    if (value === null || value === "" || value.length === 0) {
-        return true;
-    }
-    return false;
+    return value === null || value === undefined || value.length === 0;
 }
