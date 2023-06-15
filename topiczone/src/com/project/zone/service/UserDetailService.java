@@ -18,7 +18,7 @@ public interface UserDetailService {
     * @Return
     */
 
-    public abstract Integer updateUserDetail(UserDetail userDetail) throws SQLException;
+     Integer updateUserDetail(UserDetail userDetail) throws SQLException;
 
     /**
     * @author wk
@@ -28,7 +28,7 @@ public interface UserDetailService {
     * @Return
     */
 
-    public abstract Integer addUserDetailId(Integer userBasicId) throws SQLException;
+     Integer addUserDetailId(Integer userBasicId) throws SQLException;
 
     /**
     * @author wk
@@ -38,7 +38,7 @@ public interface UserDetailService {
     * @Return
     */
 
-    public abstract UserDetail getUserDetailById(Integer userBasicId) throws SQLException;
+     UserDetail getUserDetailById(Integer userBasicId) throws SQLException;
 
     /**
     * @author wk
@@ -48,7 +48,7 @@ public interface UserDetailService {
     * @Return
     */
 
-    public abstract Integer getUserDetailIdByPhone(String phone) throws SQLException;
+     Integer getUserDetailIdByPhone(String phone) throws SQLException;
 
     /**
     * @author wk
@@ -58,7 +58,7 @@ public interface UserDetailService {
     * @Return
     */
 
-    public abstract Integer getUserDetailIdByEmail(String email) throws SQLException;
+     Integer getUserDetailIdByEmail(String email) throws SQLException;
 
     /**
     * @author wk
@@ -68,7 +68,7 @@ public interface UserDetailService {
     * @Return
     */
 
-    public abstract Integer getUserDetailIdByCardId(String cardId) throws SQLException;
+     Integer getUserDetailIdByCardId(String cardId) throws SQLException;
 
 
     /**
@@ -79,6 +79,6 @@ public interface UserDetailService {
     * @Return
     */
 
-    public abstract Integer deleteUserDetail(Integer userBasicId) throws SQLException;
+     Integer deleteUserDetail(Integer userBasicId) throws SQLException;
 
 }

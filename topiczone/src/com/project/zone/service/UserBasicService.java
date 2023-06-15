@@ -28,7 +28,7 @@ public interface UserBasicService {
     * @Return
     */
 
-    public abstract UserBasic getUserBasic(String loginId,String password) throws SQLException;
+     UserBasic getUserBasic(String loginId,String password) throws SQLException;
 
     /**
     * @author wk
@@ -38,7 +38,7 @@ public interface UserBasicService {
     * @Return
     */
 
-    public abstract List<UserBasic> getFriendList(UserBasic userBasic) throws SQLException;
+     List<UserBasic> getFriendList(UserBasic userBasic) throws SQLException;
 
 
     /**
@@ -49,7 +49,7 @@ public interface UserBasicService {
     * @Return
     */
 
-    public abstract List<UserBasic> getFriendListByPageNumber(UserBasic userBasic,Integer pageNumber) throws SQLException;
+     List<UserBasic> getFriendListByPageNumber(UserBasic userBasic,Integer pageNumber) throws SQLException;
     /**
     * @author wk
     * @Description 根据好友id，获取用户
@@ -58,7 +58,7 @@ public interface UserBasicService {
     * @Return
     */
 
-    public abstract List<UserBasic> getUserListByFriendId(Integer friendId) throws SQLException;
+     List<UserBasic> getUserListByFriendId(Integer friendId) throws SQLException;
 
     /**
     * @author wk
@@ -68,7 +68,7 @@ public interface UserBasicService {
     * @Return
     */
 
-    public abstract List<UserBasic> getUserBasicList() throws SQLException;
+     List<UserBasic> getUserBasicList() throws SQLException;
 
     /**
     * @author wk
@@ -78,7 +78,7 @@ public interface UserBasicService {
     * @Return
     */
 
-    public abstract Long getFriendCount(UserBasic userBasic) throws SQLException;
+     Long getFriendCount(UserBasic userBasic) throws SQLException;
 
     /**
     * @author wk
@@ -88,7 +88,7 @@ public interface UserBasicService {
     * @Return
     */
 
-    public abstract Integer addFriend(Integer userBasicId,Integer friendId) throws SQLException;
+     Integer addFriend(Integer userBasicId,Integer friendId) throws SQLException;
 
     /**
     * @author wk
@@ -98,7 +98,7 @@ public interface UserBasicService {
     * @Return
     */
 
-    public abstract Integer deleteFriend(Integer friendId) throws SQLException;
+     Integer deleteFriend(Integer friendId) throws SQLException;
 
     /**
     * @author wk
@@ -108,7 +108,7 @@ public interface UserBasicService {
     * @Return
     */
 
-    public abstract Integer deleteUserBasicByUserId(Integer userBasicId) throws SQLException;
+     Integer deleteUserBasicByUserId(Integer userBasicId) throws SQLException;
 
     /**
     * @author wk
@@ -118,7 +118,7 @@ public interface UserBasicService {
     * @Return
     */
 
-    public abstract Integer deleteFriendByUserId(Integer userBasicId) throws SQLException;
+     Integer deleteFriendByUserId(Integer userBasicId) throws SQLException;
 
     /**
     * @author wk
@@ -128,7 +128,7 @@ public interface UserBasicService {
     * @Return
     */
 
-    public abstract UserBasic getUserBasicById(Integer userBasicId) throws SQLException;
+     UserBasic getUserBasicById(Integer userBasicId) throws SQLException;
 
     /**
     * @author wk
@@ -138,7 +138,7 @@ public interface UserBasicService {
     * @Return
     */
 
-    public abstract List<UserBasic> getUserBasicByKeyWord(String keyword,Integer pageNumber) throws SQLException;
+     List<UserBasic> getUserBasicByKeyWord(String keyword,Integer pageNumber) throws SQLException;
 
     /**
     * @author wk
@@ -148,5 +148,5 @@ public interface UserBasicService {
     * @Return
     */
 
-    public abstract Long getUserBasicCountByKeyWord(String keyword) throws SQLException;
+     Long getUserBasicCountByKeyWord(String keyword) throws SQLException;
 }

@@ -21,7 +21,7 @@ public interface ReplyService {
     * @Return
     */
 
-    public abstract Integer addReply(Reply reply) throws SQLException;
+    Integer addReply(Reply reply) throws SQLException;
 
     /**
     * @author wk
@@ -31,7 +31,7 @@ public interface ReplyService {
     * @Return
     */
 
-    public abstract Integer deleteReply(Integer replyId) throws SQLException;
+    Integer deleteReply(Integer replyId) throws SQLException;
 
     /**
     * @author wk
@@ -41,7 +41,7 @@ public interface ReplyService {
     * @Return
     */
 
-    public abstract Integer deleteReplyByUserId(Integer userBasicId) throws SQLException;
+    Integer deleteReplyByUserId(Integer userBasicId) throws SQLException;
 
     /**
     * @author wk
@@ -51,7 +51,7 @@ public interface ReplyService {
     * @Return
     */
 
-    public abstract Integer deleteReplyByTopicId(Integer topicId) throws SQLException;
+    Integer deleteReplyByTopicId(Integer topicId) throws SQLException;
 
 
     /**
@@ -62,7 +62,7 @@ public interface ReplyService {
     * @Return
     */
 
-    public abstract List<Reply> getReplyListByUserId(Integer userBasicId) throws SQLException;
+    List<Reply> getReplyListByUserId(Integer userBasicId) throws SQLException;
 
     /**
     * @author wk
@@ -72,7 +72,7 @@ public interface ReplyService {
     * @Return
     */
 
-    public abstract Integer getTopicIdByReplyId(Integer replyId) throws SQLException;
+    Integer getTopicIdByReplyId(Integer replyId) throws SQLException;
 
     /**
     * @author wk
@@ -82,7 +82,7 @@ public interface ReplyService {
     * @Return
     */
 
-    public abstract List<Reply> getReplyList(Topic topic) throws SQLException;
+    List<Reply> getReplyList(Topic topic) throws SQLException;
 
     /**
     * @author wk
@@ -92,6 +92,6 @@ public interface ReplyService {
     * @Return
     */
 
-    public abstract Integer getReplyUserId(Integer id) throws SQLException;
+    Integer getReplyUserId(Integer id) throws SQLException;
 
 }

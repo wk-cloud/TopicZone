@@ -21,7 +21,7 @@ public interface TopicService {
     * @Return
     */
 
-    public abstract Integer publish(Topic topic) throws SQLException;
+   Integer publish(Topic topic) throws SQLException;
 
     /**
     * @author wk
@@ -31,7 +31,7 @@ public interface TopicService {
     * @Return
     */
 
-    public abstract List<Topic> getTopicList(UserBasic userBasic) throws SQLException, ParseException;
+   List<Topic> getTopicList(UserBasic userBasic) throws SQLException, ParseException;
 
     /**
     * @author wk
@@ -41,7 +41,7 @@ public interface TopicService {
     * @Return
     */
 
-    public abstract List<Topic> getTopicListByPage(UserBasic userBasic,Integer pageNumber) throws SQLException;
+   List<Topic> getTopicListByPage(UserBasic userBasic,Integer pageNumber) throws SQLException;
 
     /**
     * @author wk
@@ -51,7 +51,7 @@ public interface TopicService {
     * @Return
     */
 
-    public abstract Topic getTopicById(Integer topicId) throws SQLException;
+   Topic getTopicById(Integer topicId) throws SQLException;
 
     /**
     * @author wk
@@ -61,7 +61,7 @@ public interface TopicService {
     * @Return
     */
 
-    public abstract Integer deleteTopicById(Integer id) throws SQLException;
+   Integer deleteTopicById(Integer id) throws SQLException;
 
     /**
     * @author wk
@@ -71,7 +71,7 @@ public interface TopicService {
     * @Return
     */
 
-    public abstract Integer deleteTopicByUserId(Integer userBasicId) throws SQLException;
+   Integer deleteTopicByUserId(Integer userBasicId) throws SQLException;
 
     /**
     * @author wk
@@ -81,7 +81,7 @@ public interface TopicService {
     * @Return
     */
 
-    public abstract Topic getTopic(Integer topicId) throws SQLException;
+   Topic getTopic(Integer topicId) throws SQLException;
 
     /**
     * @author wk
@@ -91,5 +91,5 @@ public interface TopicService {
     * @Return
     */
 
-    public abstract Long getTopicCount(UserBasic userBasic) throws SQLException;
+   Long getTopicCount(UserBasic userBasic) throws SQLException;
 }
